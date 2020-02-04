@@ -7,6 +7,7 @@ workflow MPRACount {
   File sam_convert
   File count
   File parse
+  File proj_list
   Int read_number
   Int seq_min
   String id_out
@@ -57,6 +58,11 @@ workflow MPRACount {
                   parse=parse,
                   id_out=id_out
                 }
+  call make_attr_list { input:
+                          proj_list=proj_list,
+                          reference_fasta=reference_fasta,
+                          id_out=id_out
+  }
 }
 
 task Flash {
@@ -158,5 +164,17 @@ task Parse {
   }
   output {
     File out="${id_out}.merged.match.enh.mapped.barcode.ct.parsed"
+  }
+}
+
+task make_attr_list {
+  File proj_list
+  File reference_fasta
+  String id_out
+  command {
+    perl ${proj_list} ${reference_fasta} ${id_out}
+  }
+  output {
+    File out="${id_out}.proj_list"
   }
 }
