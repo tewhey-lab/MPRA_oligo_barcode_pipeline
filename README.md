@@ -39,6 +39,7 @@ The inputs file will look like this:
        "MPRACount.read_b": "File",
        "MPRACount.read_a": "File",
        "MPRACount.barcode_link": "String",
+       "MPRACount.proj_list": "File",
        "MPRACount.reference_fasta": "File",
        "MPRACount.pull": "File"
      }
@@ -56,5 +57,6 @@ The inputs file will look like this:
     * MPRACount.read_b          : fastq file to be flashed
     * MPRACount.read_a          : fastq file to be flashed
     * MPRACount.barcode_link    : 6 base sequence on the barcode end of the linker sequence between oligo and barcode
+    * MPRACount.proj_list       : make_project_list.pl
     * MPRACount.reference_fasta : Reference fasta of all oligos in experiment
     * MPRACount.pull            : pull_barcodes.pl
