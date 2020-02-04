@@ -41,7 +41,8 @@ The inputs file will look like this:
        "MPRACount.barcode_link": "String",
        "MPRACount.reference_fasta": "File",
        "MPRACount.pull": "File"
-     }```
+     }
+ ```
      
   * Description of files needed (.pl files are available in this repository):
     * MPRACount.count           : Ct_seq.pl
