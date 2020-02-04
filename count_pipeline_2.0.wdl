@@ -6,6 +6,7 @@ workflow MPRACount {
   File reference_fasta
   File sam_convert
   File count
+  File parse
   Int read_number
   Int seq_min
   String id_out
@@ -52,8 +53,8 @@ workflow MPRACount {
                     id_out=id_out
                   }
   call Parse { input:
-                  counted=Ct_Seq.out
-                  parse=parse
+                  counted=Ct_Seq.out,
+                  parse=parse,
                   id_out=id_out
                 }
 }
