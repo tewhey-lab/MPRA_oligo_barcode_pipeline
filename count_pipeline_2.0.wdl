@@ -7,13 +7,16 @@ workflow MPRACount {
   File sam_convert
   File count
   File parse
-  File proj_list
+  File list_proj
+  File oligo_type
+  File compile
   Int read_number
   Int seq_min
   String id_out
   String barcode_link
   String oligo_link
   String end_oligo_link
+  String flags
 
   call Flash { input:
                   read_a=read_a,
@@ -59,9 +62,20 @@ workflow MPRACount {
                   id_out=id_out
                 }
   call make_attr_list { input:
-                          proj_list=proj_list,
+                          list_proj=list_proj,
                           reference_fasta=reference_fasta,
                           id_out=id_out
+  }
+  call make_attr_file { input:
+                          proj_list=make_attr_list.out,
+                          oligo_type=oligo_type,
+                          id_out=id_out
+  }
+  call make_count_table { input:
+                            count_parse=Parse.out,
+                            compile=compile,
+                            flags=flags,
+                            id_out=id_out
   }
 }
 
@@ -168,13 +182,38 @@ task Parse {
 }
 
 task make_attr_list {
-  File proj_list
+  File list_proj
   File reference_fasta
   String id_out
   command {
-    perl ${proj_list} ${reference_fasta} ${id_out}
+    perl ${list_proj} ${reference_fasta} ${id_out}
   }
   output {
     File out="${id_out}.proj_list"
+  }
+}
+
+task make_attr_file {
+  File proj_list
+  File oligo_type
+  String id_out
+  command {
+    perl ${oligo_type} ${proj_list} ${id_out}
+  }
+  output {
+    File out="${id_out}.attributes"
+  }
+}
+
+task make_count_table {
+  File count_parse
+  File compile
+  String? flags = ""
+  String id_out
+  command {
+    perl ${compile} ${flags} ${count_parse} ${id_out}.count
+  }
+  output {
+    File out="$id_out.count"
   }
 }
