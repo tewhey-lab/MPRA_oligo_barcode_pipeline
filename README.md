@@ -58,7 +58,7 @@ MPRACount.parse           | _parse_map.pl_
 MPRACount.seq_min         | Minimum acceptable sequence length for barcode-oligo sequence
 MPRACount.id_out          | Project Name to be used for all files
 MPRACount.sam_convert     | _SAM2MPRA.pl_
-MPRACount.flags           | Flags to be used with the _compile_bc.pl_ script, detailed within the script
+MPRACount.flags           | Flags to be used with the _compile_bc.pl_ script, detailed within the script (Suggested Use: "-ECSM -A 0.05")
 MPRACount.end_oligo_link  | 4 base sequence to indicate the end of the oligo
 MPRACount.oligo_type      | _make_attributes_oligo_v*.pl_ Here use the script that is associated with the type of oligo you have
 MPRACount.oligo_link      | 4 base sequence on the oligo end of the linker sequence between oligo and barcode
