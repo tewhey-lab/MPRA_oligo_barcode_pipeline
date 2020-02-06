@@ -45,18 +45,19 @@ The inputs file will look like this:
      }
  ```
      
-  * Description of files needed (.pl files are available in this repository):
-    * MPRACount.count           : Ct_seq.pl
-    * MPRACount.parse           : parse_map.pl
-    * MPRACount.seq_min         : Minimum acceptable sequence length for barcode-oligo sequence
-    * MPRACount.id_out          : Project Name to be used for all files
-    * MPRACount.sam_convert     : SAM2MPRA.pl
-    * MPRACount.end_oligo_link  : 4 base sequence to indicate the end of the oligo
-    * MPRACount.oligo_link      : 4 base sequence on the oligo end of the linker sequence between oligo and barcode
-    * MPRACount.read_number     : 1 if the reverse complement needs to be taken, otherwise 2
-    * MPRACount.read_b          : fastq file to be flashed
-    * MPRACount.read_a          : fastq file to be flashed
-    * MPRACount.barcode_link    : 6 base sequence on the barcode end of the linker sequence between oligo and barcode
-    * MPRACount.proj_list       : make_project_list.pl
-    * MPRACount.reference_fasta : Reference fasta of all oligos in experiment
-    * MPRACount.pull            : pull_barcodes.pl
+  File | Description of File
+  ---- | -------------------
+  MPRACount.count           | Ct_seq.pl
+  MPRACount.parse           | parse_map.pl
+  MPRACount.seq_min         | Minimum acceptable sequence length for barcode-oligo sequence
+  MPRACount.id_out          | Project Name to be used for all files
+  MPRACount.sam_convert     | SAM2MPRA.pl
+  MPRACount.end_oligo_link  | 4 base sequence to indicate the end of the oligo
+  MPRACount.oligo_link      | 4 base sequence on the oligo end of the linker sequence between oligo and barcode
+  MPRACount.read_number     | 1 if the reverse complement needs to be taken, otherwise 2
+  MPRACount.read_b          | fastq file to be flashed
+  MPRACount.read_a          | fastq file to be flashed
+  MPRACount.barcode_link    | 6 base sequence on the barcode end of the linker sequence between oligo and barcode
+  MPRACount.proj_list       | make_project_list.pl
+  MPRACount.reference_fasta | Reference fasta of all oligos in experiment
+  MPRACount.pull            | pull_barcodes.pl
