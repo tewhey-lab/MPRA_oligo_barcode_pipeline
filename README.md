@@ -33,14 +33,17 @@ The inputs file will look like this:
        "MPRACount.seq_min": "Int",
        "MPRACount.id_out": "String",
        "MPRACount.sam_convert": "File",
+       "MPRACount.flags": "String",
        "MPRACount.end_oligo_link": "String",
+       "MPRACount.oligo_type": "File",
        "MPRACount.oligo_link": "String",
        "MPRACount.read_number": "Int",
        "MPRACount.read_b": "File",
        "MPRACount.read_a": "File",
        "MPRACount.barcode_link": "String",
-       "MPRACount.proj_list": "File",
        "MPRACount.reference_fasta": "File",
+       "MPRACount.compile": "File",
+       "MPRACount.list_proj": "File",
        "MPRACount.pull": "File"
      }
  ```
@@ -55,12 +58,15 @@ MPRACount.parse           | _parse_map.pl_
 MPRACount.seq_min         | Minimum acceptable sequence length for barcode-oligo sequence
 MPRACount.id_out          | Project Name to be used for all files
 MPRACount.sam_convert     | _SAM2MPRA.pl_
+MPRACount.flags           | Flags to be used with the _compile_bc.pl_ script, detailed within the script
 MPRACount.end_oligo_link  | 4 base sequence to indicate the end of the oligo
+MPRACount.oligo_type      | _make_attributes_oligo_v*.pl_ Here use the script that is associated with the type of oligo you have
 MPRACount.oligo_link      | 4 base sequence on the oligo end of the linker sequence between oligo and barcode
 MPRACount.read_number     | 1 if the reverse complement needs to be taken, otherwise 2
 MPRACount.read_b          | fastq file to be flashed
 MPRACount.read_a          | fastq file to be flashed
 MPRACount.barcode_link    | 6 base sequence on the barcode end of the linker sequence between oligo and barcode
-MPRACount.proj_list       | _make_project_list.pl_
 MPRACount.reference_fasta | Reference fasta of all oligos in experiment
-  MPRACount.pull            | _pull_barcodes.pl_
+MPRACount.compile         | _compile_bc.pl_
+MPRACount.proj_list       | _make_project_list.pl_
+MPRACount.pull            | _pull_barcodes.pl_
