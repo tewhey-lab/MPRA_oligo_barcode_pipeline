@@ -1,5 +1,8 @@
 ###Wdl version of pipeline for organizing MPRA count data
 workflow MPRACount {
+  Array[String] replicate_fastq
+  Array[String] replicate_id
+  Array[Pair[String,String]] fastq_id = zip(replicate_fastq, replicate_id)
   File read_a
   File read_b
   File pull
@@ -9,6 +12,8 @@ workflow MPRACount {
   File parse
   File list_proj
   File oligo_type
+  File make_counts
+  File associate_tags
   File compile
   Int read_number
   Int seq_min
@@ -65,19 +70,39 @@ workflow MPRACount {
                           list_proj=list_proj,
                           reference_fasta=reference_fasta,
                           id_out=id_out
-  }
+                        }
   call make_attr_file { input:
                           proj_list=make_attr_list.out,
                           oligo_type=oligo_type,
                           id_out=id_out
-  }
+                        }
+  scatter (replicate in fastq_id) {
+    call prep_counts { input:
+                          make_counts=make_counts,
+                          sample_fastq=replicate.left,
+                          parsed=Parse.out,
+                          sample_id=replicate.right
+                        }
+    call associate { input:
+                        associate_tags=associate_tags,
+                        matched=prep_counts.out,
+                        parsed=Parse.out,
+                        sample_id=replicate.right
+                      }
+                    }
+  call make_infile { input:
+                        tag_files=associate.outF,
+                        tag_ids=associate.outS,
+                        id_out=id_out
+                      }
   call make_count_table { input:
-                            count_parse=Parse.out,
+                            list_inFile=make_infile.out,
                             compile=compile,
                             flags=flags,
-                            id_out=id_out
+                            id_out=id_out,
+                            replicate_id=replicate_id
+                          }
   }
-}
 
 task Flash {
   # Flashing raw fastq files together
@@ -90,8 +115,7 @@ task Flash {
   output {
     File out="${id_out}.merged.extendedFrags.fastq"
   }
-}
-
+  }
 task Pull_Barcodes {
   File pull
   File merged_fastq
@@ -108,19 +132,17 @@ task Pull_Barcodes {
     File out1="${id_out}.merged.match"
     File out2="${id_out}.merged.reject"
   }
-}
-
+  }
 task Rearrange {
   File matched_barcodes
   String id_out
   command <<<
-    awk '{print ">"$1"#"$3"\n"$4}' ${matched_barcodes} > ${id_out}.merged.match.enh.fa
+    awk '{print ">"$1"#"$3"\n"$4}' ~{matched_barcodes} > ~{id_out}.merged.match.enh.fa
   >>>
   output {
     File out="${id_out}.merged.match.enh.fa"
   }
-}
-
+  }
 task MiniMap {
   File reference_fasta
   File organized_fasta
@@ -132,8 +154,7 @@ task MiniMap {
     File out1="${id_out}.merged.match.enh.sam"
     File out2="${id_out}.merged.match.enh.log"
   }
-}
-
+  }
 task SAM2MPRA {
   File sam_convert
   File sam_file
@@ -144,8 +165,7 @@ task SAM2MPRA {
   output {
     File out="${id_out}.merged.match.enh.mapped"
   }
-}
-
+  }
 task Sort {
   File MPRA_out
   String id_out
@@ -155,8 +175,7 @@ task Sort {
   output {
     File out="${id_out}.merged.match.enh.mapped.barcode.sort"
   }
-}
-
+  }
 task Ct_Seq {
   File count
   File sorted
@@ -167,8 +186,7 @@ task Ct_Seq {
   output {
     File out="${id_out}.merged.match.enh.mapped.barcode.ct"
   }
-}
-
+  }
 task Parse {
   File counted
   File parse
@@ -179,8 +197,7 @@ task Parse {
   output {
     File out="${id_out}.merged.match.enh.mapped.barcode.ct.parsed"
   }
-}
-
+  }
 task make_attr_list {
   File list_proj
   File reference_fasta
@@ -191,8 +208,7 @@ task make_attr_list {
   output {
     File out="${id_out}.proj_list"
   }
-}
-
+  }
 task make_attr_file {
   File proj_list
   File oligo_type
@@ -203,15 +219,55 @@ task make_attr_file {
   output {
     File out="${id_out}.attributes"
   }
+  }
+task prep_counts {
+  File make_counts
+  File sample_fastq
+  File parsed
+  String sample_id
+  command {
+    python ${make_counts} ${sample_fastq} ${parsed} ${sample_id}
+  }
+  output {
+    File out="${sample_id}.match"
+  }
+  }
+task associate {
+  File associate_tags
+  File matched
+  File parsed
+  String sample_id
+  command {
+    perl ${associate_tags} ${matched} ${parsed} ${sample_id}.tag
+  }
+  output {
+    File outF="${sample_id}.tag"
+    String outS="${sample_id}"
+  }
+  }
+task make_infile {
+  Array[File] tag_files
+  Array[String] tag_ids
+  String id_out
+  Array[Pair[String, File]] tags=zip(tag_ids,tag_files)
+  command <<<
+    for pair in ~{sep=' ' tags}; do
+      printf "%s\t%s\n" "~{pair.left}" "~{pair.right}" >> ~{id_out}_samples.txt
+    done
+  >>>
+  output {
+    File out="${id_out}_samples.txt"
+  }
 }
 
 task make_count_table {
-  File count_parse
+  File list_inFile
   File compile
+  Array[String] replicate_id
   String? flags = ""
   String id_out
   command {
-    perl ${compile} ${flags} ${count_parse} ${id_out}.count
+    perl ${compile} ${flags} ${list_inFile} ${id_out}.count ${replicate_id}
   }
   output {
     File out="$id_out.count"
