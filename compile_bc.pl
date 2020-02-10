@@ -52,15 +52,14 @@ else {$POS_flag = 0;}
 my $aln_cutoff = $options{A} || 0.05;
 print STDERR "Using $aln_cutoff error rate for alignment cutoff\n";
 
- 
-my $list = $ARGV[0]; #File with ID and filename
-my $out = $ARGV[1];
-
+my $samples = $ARGV[0];
+my $list = $ARGV[1]; #File with ID and filename
+my $out = $ARGV[2];
+my @ordered_list = @ARGV[3..$#ARGV];
 #open (MATCH, "$match_file") or die("ERROR: can not read file ($match_file): $!\n");
 
 my @inline;
 my %file_list;
-my @ordered_list;
 
 open (LIST, "$list") or die("ERROR: can not read file ($list): $!\n");
 	while (<LIST>)
@@ -68,7 +67,6 @@ open (LIST, "$list") or die("ERROR: can not read file ($list): $!\n");
 		chomp;
 		@inline = split(/\s+/);
 		$file_list{$inline[0]}=$inline[1];	
-		push(@ordered_list,$inline[0]);
 		}
 
 my %sample;
