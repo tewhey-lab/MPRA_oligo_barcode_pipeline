@@ -78,3 +78,9 @@ MPRACount.reference_fasta | Reference fasta of all oligos in experiment
 MPRACount.compile         | _compile_bc.pl_
 MPRACount.proj_list       | _make_project_list.pl_
 MPRACount.pull            | _pull_barcodes.pl_
+
+
+## Outputs
+The following files can then be input into the R pipeline [here]https://github.com/tewhey-lab/MPRA_tag_analysis for analysis:
+  * Attributes File: `cromwell-exectutions/MPRACount/<job_id>/call-make_attribute_file/<id_out>.attributes`
+  * Count File     : `cromwell-exectutions/MPRACount/<job_id>/call-make_count_table/<id_out>.count`
