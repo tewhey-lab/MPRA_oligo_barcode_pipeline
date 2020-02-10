@@ -81,6 +81,6 @@ MPRACount.pull            | _pull_barcodes.pl_
 
 
 ## Outputs
-The following files can then be input into the R pipeline [here]https://github.com/tewhey-lab/MPRA_tag_analysis for analysis:
+The following files can then be input into the R pipeline [here](https://github.com/tewhey-lab/MPRA_tag_analysis) for analysis:
   * Attributes File: `cromwell-exectutions/MPRACount/<job_id>/call-make_attribute_file/<id_out>.attributes`
   * Count File     : `cromwell-exectutions/MPRACount/<job_id>/call-make_count_table/<id_out>.count`
