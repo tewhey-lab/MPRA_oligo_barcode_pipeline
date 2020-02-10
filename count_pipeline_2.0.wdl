@@ -258,8 +258,7 @@ task make_infile {
   output {
     File out="${id_out}_samples.txt"
   }
-}
-
+  }
 task make_count_table {
   File list_inFile
   File compile
@@ -272,4 +271,4 @@ task make_count_table {
   output {
     File out="$id_out.count"
   }
-}
+  }
