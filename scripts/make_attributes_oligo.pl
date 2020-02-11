@@ -33,6 +33,9 @@ my $haplotype;
 my $ref_allele;
 my $alt_allele;
 my $snp_pos;
+my $len;
+my $i;
+my $field;
 
 while (<PROJ>){
   chomp;
@@ -42,25 +45,49 @@ while (<PROJ>){
 close PROJ;
 
 foreach $oligo (keys %oligo_proj) {
-  @oligo_info = split(/_/, $oligo)
-  @attribute = split(/:/, $oligo_info[0]);
-  @more = split(/-/, $oligo_info[1]);
-  $snp = join(":", $attribute[0], $attribute[1], $attribute[2], $attribute[3]);
-  $allele = 'ref' if($attribute[4] eq 'R');
-  $allele = 'ref' if($attribute[4] eq 'A');
-  $window = 'left' if($attribute[5] eq 'wL');
-  $window = 'center' if($attribute[5] eq 'wC');
-  $window = 'right' if($attribute[5] eq 'wR');
-  $strand = 'fwd';
+
+  @attribute = split(/:/, $oligo);
+
+  $len=scalar(@attribute);
+  die "Need atleast 4 attributes in ID. Only $len found in $oligo\n" if($len < 4);
+  
   $chr = $attribute[0];
+  $snp_pos = $attribute[1]; 
   $ref_allele = $attribute[2];
   $alt_allele = $attribute[3];
-  $snp_pos = $attribute[1];
-  $haplotype = 'ref'
-  if(scalar(@attribute)==6){
-    $haplotype = 'alt' if($attribute[6] eq 'Alt')
-  }
+  
+  if($len >= 5) {
+    $allele = $attribute[4];
+    $allele = 'ref' if($attribute[4] eq 'R');
+    $allele = 'alt' if($attribute[4] eq 'A');
+    }
+  else {$allele = "NA";}
+  print STDERR "Allele should be R or A, set as '$allele' in $oligo\n" unless($allele eq 'ref' || $allele eq 'alt');
+  
 
+  if($len >= 6) {
+    $window = $attribute[5];
+    $window = 'left' if($attribute[5] eq 'wL');
+    $window = 'center' if($attribute[5] eq 'wC');
+    $window = 'right' if($attribute[5] eq 'wR'); 
+    }
+  else {$window = "NA";}
+  print STDERR "Window should be wL, wC or wR, set as '$window' in $oligo\n" unless($window eq 'left' || $window eq 'center' || $window eq 'right');
+  
+  $snp = join(":", $attribute[0], $attribute[1], $attribute[2], $attribute[3]);
+  $strand = 'fwd';
+  $haplotype = 'ref';
+  
+  ###Process additional attributes
+  if(scalar(@attribute) > 5) {
+    for($i=5;$i<scalar(@attribute);$i++) {
+      if($attribute[$i] =~ m/^Alt/)
+      	{
+    	###Process alt haplotypes
+    	$haplotype = 'alt'
+    	}  
+    }
+  }
   print OUT join("\t", $oligo, $snp, $chr, $snp_pos, $ref_allele, $alt_allele, $allele,
                   $window, $strand, $oligo_proj{$oligo}, $haplotype . "\n");
 }
