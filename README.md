@@ -3,7 +3,7 @@
 
 ## Before running the pipeline
 * Have a working version of Java in your workspace
-  * Or download the installer [here](https://www.java.com/en/download/manual.jsp) and copy to the machine
+  * Download the installer [here](https://www.java.com/en/download/manual.jsp) and copy to the machine
 
 * Have the latest version of Cromwell and Womtool in your workspace
   * Download [here](https://github.com/broadinstitute/cromwell/releases/tag/48)
@@ -12,7 +12,7 @@
   * `conda install -c bioconda flash2 `
   * `conda install -c bioconda minimap2`
 
-* Make sure all the available scripts (except for the WDL itself) are in a folder called scripts in the working directory where the Cromwell and Womtool .jars are present
+* Make sure all the available scripts (except for the WDL itself) are in a folder called scripts in the working directory where the Cromwell and Womtool `.jar`s are present
 
 ## Running the WDL
 * Validate the file
