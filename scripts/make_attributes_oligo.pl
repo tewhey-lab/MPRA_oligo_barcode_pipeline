@@ -44,6 +44,8 @@ while (<PROJ>){
 }
 close PROJ;
 
+print OUT join("\t","id","var","chr","pos","ref_allele","alt_allele","allele","window","strand","project","haplotype")."\n";
+
 foreach $oligo (keys %oligo_proj) {
 
   @attribute = split(/:/, $oligo);
