@@ -56,7 +56,7 @@ MPRACount.seq_min         | Minimum acceptable sequence length for barcode-oligo
 MPRACount.id_out          | Project Name to be used for all files
 MPRACount.flags           | Flags to be used with the _compile_bc.pl_ script, detailed within the script (Suggested Use: "-ECSM -A 0.05")
 MPRACount.end_oligo_link  | 4 base sequence to indicate the end of the oligo
-MPRACount.oligo_type      | _make_attributes_oligo_v*.pl_ Here use the script that is associated with the type of oligo you have
+MPRACount.oligo_type      | _make_attributes_oligo_v*.pl_ Here use the script that is associated with the type of oligo you have, you only need to give the name of the script within the `/scripts/` folder
 MPRACount.oligo_link      | 4 base sequence on the oligo end of the linker sequence between oligo and barcode
 MPRACount.replicate_fastq | Array of the fastq files for each replicate. Each replicate should have 1 composite file.
 MPRACount.read_number     | 1 if the reverse complement needs to be taken, otherwise 2
