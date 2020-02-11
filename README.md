@@ -16,7 +16,7 @@
 
 ## Running the WDL
 * Validate the file
-  `java -jar womtool-48.jar validate count_pipeline_2.0.`
+  `java -jar womtool-48.jar validate count_pipeline_2.0.wdl`
   **NB: use the version number for your version of Womtool downloaded above**
 
 * Generate inputs file
