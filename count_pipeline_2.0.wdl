@@ -1,6 +1,6 @@
 ###Wdl version of pipeline for organizing MPRA count data
 workflow MPRACount {
-  Array[String] replicate_fastq
+  Array[File] replicate_fastq
   Array[String] replicate_id
   Array[Pair[String,String]] fastq_id = zip(replicate_fastq, replicate_id)
   File read_a
