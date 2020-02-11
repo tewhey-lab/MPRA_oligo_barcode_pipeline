@@ -41,7 +41,7 @@ while (<PROJ>){
 }
 close PROJ;
 
-foreach $oligo (keys %oligo_proj)
+foreach $oligo (keys %oligo_proj) {
   @oligo_info = split(/_/, $oligo)
   @attribute = split(/:/, $oligo_info[0]);
   @more = split(/-/, $oligo_info[1]);
