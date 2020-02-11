@@ -44,7 +44,7 @@ while (<PROJ>){
 }
 close PROJ;
 
-print OUT join("\t","ID","var","chr","pos","ref_allele","alt_allele","allele","window","strand","project","haplotype")."\n";
+print OUT join("\t","ID","SNP","chr","pos","ref_allele","alt_allele","allele","window","strand","project","haplotype")."\n";
 
 foreach $oligo (keys %oligo_proj) {
 
