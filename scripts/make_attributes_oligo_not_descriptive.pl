@@ -17,10 +17,10 @@ open (OUT, ">$out".".attributes") or die("ERROR: can not open file ($out.attribu
 my %oligo_proj;
 
 my @line;
-my @more
+my @more;
 
 my $snp;
-my $id
+my $id;
 my $oligo_num;
 my $oligo_name;
 my $allele;
@@ -49,7 +49,7 @@ foreach $id (keys %oligo_proj)
       $allele = 'ref';
       if($oligo_num % 2 ==0){
         $oligo_num += -1;
-        $allele= 'alt'
+        $allele= 'alt';
       }
       $snp = $more[0]."_".$more[1]."_".$oligo_name.$oligo_num;
     }
