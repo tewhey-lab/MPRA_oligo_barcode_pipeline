@@ -52,10 +52,9 @@ else {$POS_flag = 0;}
 my $aln_cutoff = $options{A} || 0.05;
 print STDERR "Using $aln_cutoff error rate for alignment cutoff\n";
 
-my $samples = $ARGV[0];
-my $list = $ARGV[1]; #File with ID and filename
-my $out = $ARGV[2];
-my @ordered_list = @ARGV[3..$#ARGV];
+my $list = $ARGV[0]; #File with ID and filename
+my $out = $ARGV[1];
+my @ordered_list = @ARGV[2..$#ARGV];
 #open (MATCH, "$match_file") or die("ERROR: can not read file ($match_file): $!\n");
 
 my @inline;
