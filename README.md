@@ -1,4 +1,4 @@
-# Tag Analysis Pipeline
+# Tag Analysis Pipeline (two parts)
 ### Written in the Written Description Language (WDL) version 1.0 more info [here](https://github.com/openwdl/wdl)
 
 ## Before running the pipeline
@@ -8,11 +8,13 @@
 * Have the latest version of Cromwell and Womtool in your workspace
   * Download [here](https://github.com/broadinstitute/cromwell/releases/tag/48)
   
-* Have modules for FLASH2 and minimap2 available
+* Have modules for FLASH2, minimap2, pandas, and B available
   * `conda install -c bioconda flash2 `
   * `conda install -c bioconda minimap2`
+  * `conda install -c anaconda pandas`
+  * `conda install -c anaconda biopython`
 
-* Make sure all the available scripts (except for the WDL itself) are in a folder called scripts in the working directory where the Cromwell and Womtool `.jar`s are present
+* Make sure all the available scripts (except for the WDL itself) are in a known directory (you will need to provide the path to this directory) in the working directory where the Cromwell and Womtool `.jar`s are present
 
 ## Running the WDL
 * Validate the file
@@ -27,47 +29,43 @@
   `java -jar cromwell-48.jar run count_pipeline_2.0.wdl --inputs <your_projects_name>_inputs.json`
   
 ## Filling in the json
-The inputs file will look like this:
-  ```
+A generalized filled in example of each .json is below
+_MPRAMatch.wdl_
+ ```
      {
-       "MPRACount.seq_min": "Int",
-       "MPRACount.id_out": "String",
-       "MPRACount.flags": "String",
-       "MPRACount.end_oligo_link": "String",
-       "MPRACount.oligo_type": "File",
-       "MPRACount.oligo_link": "String",
-       "MPRACount.replicate_fastq": "Array[File]",
-       "MPRACount.associate_tags": "File",
-       "MPRACount.read_number": "Int",
-       "MPRACount.replicate_id": "Array[String]",
-       "MPRACount.read_b": "File",
-       "MPRACount.read_a": "File",
-       "MPRACount.barcode_link": "String",
-       "MPRACount.reference_fasta": "File",
+       "MPRAMatch.read_a": "full/path/to/read/1.fastq.gz",
+       "MPRAMatch.read_b": "full/path/to/read/2.fastq.gz",
+       "MPRAMatch.reference_fasta": "/full/path/to/reference/fasta.fa",
+       "MPRAMatch.read_b_number": "2",
+       "MPRAMatch.seq_min": "100",
+       "MPRAMatch.working_directory": "full/path/to/script/location",
+       "MPRAMatch.id_out": "Your_Project_ID",
+       "MPRAMatch.barcode_link": "6 bases at the 3' end of the sequence linking the barcode and oligo",
+       "MPRAMatch.oligo_link": "4 bases at the 5' end of the sequence linking the barcode and oligo",
+       "MPRAMatch.end_oligo_link": "4 bases indicating the oligo is no longer being sequenced (5' end)"
+
+     }
+ ```
+_ReplicateCount.wd_
+ ```
+     {
+       "ReplicateCount.reference_fasta": "/full/path/to/reference/fasta.fa",
+       "ReplicateCount.parsed": "full/path/to/MPRAMatch/output.merged.match.enh.mapped.barcode.ct.parsed",
+       "ReplicateCount.read_b_number": "2 (same as used for MPRAMatch)",
+       "ReplicateCount.working_directory": "full/path/to/script/location",
+       "ReplicateCount.id_out": "Your_Project_ID",
+       "ReplicateCount.flags": "-ECSM -A 0.05 (suggested)",
+       "ReplicateCount.replicate_fastq": ["full/path/to/celltype1/rep1.fastq.gz", "full/path/to/celltype1/rep2.fastq.gz", "full/path/to/celltype1/rep3.fastq.gz", "full/path/to/celltype2/rep1.fastq.gz",...],
+       "ReplicateCount.replicate_id": ["Celltype1_r1", "Celltype1_r2", "Celltype1_r3", "Celltype2_r1", ...]
+
      }
  ```
 
-Below is a description of what kind of file should be input in the .json file above. Script names (italicized in the description table) are the same as those provided in the repository.
+**NB: For the replicate fastq files, a single fastq.gz file is required for each replicate, if there are more than one they should be concatenated together**
 
-
-**File** | **Description of File**
--------- | -----------------------
-MPRACount.seq_min         | Minimum acceptable sequence length for barcode-oligo sequence
-MPRACount.id_out          | Project Name to be used for all files
-MPRACount.flags           | Flags to be used with the _compile_bc.pl_ script, detailed within the script (Suggested Use: "-ECSM -A 0.05")
-MPRACount.end_oligo_link  | 4 base sequence to indicate the end of the oligo
-MPRACount.oligo_type      | _make_attributes_oligo_v*.pl_ Here use the script that is associated with the type of oligo you have, you only need to give the name of the script within the `/scripts/` folder
-MPRACount.oligo_link      | 4 base sequence on the oligo end of the linker sequence between oligo and barcode
-MPRACount.replicate_fastq | Array of the fastq files for each replicate. Each replicate should have 1 composite file.
-MPRACount.read_number     | 1 if the reverse complement needs to be taken, otherwise 2
-MPRACount.replicate_id    | Array of the replicate ids, to be used as column headers in count table
-MPRACount.read_b          | fastq file to be flashed
-MPRACount.read_a          | fastq file to be flashed
-MPRACount.barcode_link    | 6 base sequence on the barcode end of the linker sequence between oligo and barcode
-MPRACount.reference_fasta | Reference fasta of all oligos in experiment
-
-
-## Outputs
-The following files can then be input into the R pipeline [here](https://github.com/tewhey-lab/MPRA_tag_analysis) for analysis:
-  * Attributes File: `cromwell-exectutions/MPRACount/<job_id>/call-make_attribute_file/<id_out>.attributes`
-  * Count File     : `cromwell-exectutions/MPRACount/<job_id>/call-make_count_table/<id_out>.count`
+## Outputs Needed at later steps
+It is suggested that you note the job id generated within cromwell for assistance finding these files at a later date.
+The output file from MPRAMatch needed as input for the ReplicateCount pipeline can be found at:
+  * Parsed File    : `cromwell-exectutions/MPRAMatch/<job_id>/call-Parse/execution/<id_out>.merged.match.enh.mapped.barcode.ct.parsed`
+The following file can then be input into the R pipeline [here](https://github.com/tewhey-lab/MPRA_tag_analysis) for analysis:
+  * Count File     : `cromwell-exectutions/ReplicateCount/<job_id>/call-make_count_table/execution/<id_out>.count`
