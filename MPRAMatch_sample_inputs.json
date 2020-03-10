@@ -1,0 +1,12 @@
+{
+  "MPRAMatch.read_a": "File",
+  "MPRAMatch.read_b": "File",
+  "MPRAMatch.reference_fasta": "File",
+  "MPRAMatch.read_b_number": "Int",
+  "MPRAMatch.seq_min": "Int",
+  "MPRAMatch.working_directory": "String",
+  "MPRAMatch.id_out": "String",
+  "MPRAMatch.barcode_link": "String",
+  "MPRAMatch.oligo_link": "String",
+  "MPRAMatch.oligo_link": "String"
+}
