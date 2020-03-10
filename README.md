@@ -41,9 +41,9 @@ _MPRAMatch.wdl_
        "MPRAMatch.seq_min": "100",
        "MPRAMatch.working_directory": "full/path/to/script/location",
        "MPRAMatch.id_out": "Your_Project_ID",
-       "MPRAMatch.barcode_link": "6 bases at the 3' end of the sequence linking the barcode and oligo",
-       "MPRAMatch.oligo_link": "4 bases at the 5' end of the sequence linking the barcode and oligo",
-       "MPRAMatch.end_oligo_link": "4 bases indicating the oligo is no longer being sequenced (5' end)"
+       "MPRAMatch.barcode_link": "6 bases at the barcode end of the sequence linking the barcode and oligo",
+       "MPRAMatch.oligo_link": "4 bases at the oligo end of the sequence linking the barcode and oligo",
+       "MPRAMatch.end_oligo_link": "4 bases indicating the oligo is no longer being sequenced"
 
      }
  ```
