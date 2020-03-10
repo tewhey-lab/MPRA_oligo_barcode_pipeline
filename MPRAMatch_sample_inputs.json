@@ -8,5 +8,5 @@
   "MPRAMatch.id_out": "String",
   "MPRAMatch.barcode_link": "String",
   "MPRAMatch.oligo_link": "String",
-  "MPRAMatch.oligo_link": "String"
+  "MPRAMatch.end_oligo_link": "String"
 }
