@@ -18,15 +18,17 @@
 
 ## Running the WDL
 * Validate the file
-  `java -jar womtool-48.jar validate count_pipeline_2.0.wdl`
+  `java -jar womtool-48.jar validate <pipeline_name>.wdl`
+  
   **NB: use the version number for your version of Womtool downloaded above**
 
 * Generate inputs file
-  `java -jar womtool-48.jar inputs count_pipeiline_2.0.wdl > <your_projects_name>_inputs.json`
+  `java -jar womtool-48.jar inputs <pipeline_name>.wdl > <your_projects_name>_inputs.json`
+  
   **NB: see the "Filling in the json" section below for detailed description of input needed**
  
 * Run the pipeline with your inputs
-  `java -jar cromwell-48.jar run count_pipeline_2.0.wdl --inputs <your_projects_name>_inputs.json`
+  `java -jar cromwell-48.jar run <pipeline_name>.wdl --inputs <your_projects_name>_inputs.json`
   
 ## Filling in the json
 A generalized filled in example of each .json is below
@@ -50,7 +52,6 @@ _MPRAMatch.wdl_
 _ReplicateCount.wd_
  ```
      {
-       "ReplicateCount.reference_fasta": "/full/path/to/reference/fasta.fa",
        "ReplicateCount.parsed": "full/path/to/MPRAMatch/output.merged.match.enh.mapped.barcode.ct.parsed",
        "ReplicateCount.read_b_number": "2 (same as used for MPRAMatch)",
        "ReplicateCount.working_directory": "full/path/to/script/location",
