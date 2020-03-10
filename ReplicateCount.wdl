@@ -91,6 +91,6 @@ task make_count_table {
     perl ${working_directory}/compile_bc.pl ${flags} ${list_inFile} ${id_out}.count
     }
   output {
-    File out="{$id_out}.count"
+    File out="${id_out}.count"
     }
   }
