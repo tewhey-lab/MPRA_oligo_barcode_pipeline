@@ -1,5 +1,4 @@
 {
-  "ReplicateCount.reference_fasta": "File",
   "ReplicateCount.parsed": "File",
   "ReplicateCount.read_b_number": "Int",
   "ReplicateCount.working_directory": "String",

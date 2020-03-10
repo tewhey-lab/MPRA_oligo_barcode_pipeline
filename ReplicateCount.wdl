@@ -1,12 +1,11 @@
 # Pipeline for counting MPRA Replicates
-# Requires the same reference_fasta, read_b_number as MPRAMatch
+# Requires the same read_b_number as MPRAMatch
 # Requires the parsed file output from MPRAMatch
 
 workflow ReplicateCount {
   Array[String] replicate_fastq
   Array[String] replicate_id
   Array[Pair[String,String]] fastq_id = zip(replicate_fastq, replicate_id)
-  File reference_fasta
   File parsed
   Int read_b_number
   String flags
