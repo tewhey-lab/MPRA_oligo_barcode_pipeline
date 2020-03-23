@@ -49,7 +49,7 @@ _MPRAMatch.wdl_
 
      }
  ```
-_ReplicateCount.wd_
+_ReplicateCount.wdl_
  ```
      {
        "ReplicateCount.parsed": "full/path/to/MPRAMatch/output.merged.match.enh.mapped.barcode.ct.parsed",
