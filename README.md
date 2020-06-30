@@ -78,6 +78,7 @@ The following file can then be input into the R pipeline [here](https://github.c
 
 _MPRAMatch_
 ![Graphical Pipeline](graphics/MPRAMatch_pipeline.png?raw=true "MPRAMatch Graphical Pipeline")
+
 The above image is a graphical representation of the MPRAMatch pipeline. Green objects represent files and information provided to the pipeline which are passed directly to a script or program, blue objects are the calls to the modules called for above, and yellow objects refer to scripts written for the pipeline.
 
 The two fastq files from the initial barcode-oligo sequencing are fed into FLASH2 in order to merge them into a single fastq. The merged fastq is then passed to a script which pulls the barcode and oligo sequences for each record in the fastq based on the linker sequences between the barcode and oligo, and at the end of the oligo. The barcode/oligo pair information is rearranged into a FASTA format and passed to MiniMap2 along with the reference fasta. The resulting SAM file is parsed for the Oligo name, barcode sequence, CIGAR, and error information for each mapped record. The number of times each barcode appears for each oligo is then counted; the output is passed to preseq to determine sequencing depth, and parsed to resolve barcodes which map to multiple oligos.
