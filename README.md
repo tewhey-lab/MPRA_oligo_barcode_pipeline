@@ -77,6 +77,7 @@ The following file can then be input into the R pipeline [here](https://github.c
 ## How the Pipelines working
 
 _MPRAMatch_
+
 ![Graphical Pipeline](graphics/MPRAMatch_pipeline.png?raw=true "MPRAMatch Graphical Pipeline")
 
 The above image is a graphical representation of the MPRAMatch pipeline. Green objects represent files and information provided to the pipeline which are passed directly to a script or program, blue objects are the calls to the modules called for above, and yellow objects refer to scripts written for the pipeline.
