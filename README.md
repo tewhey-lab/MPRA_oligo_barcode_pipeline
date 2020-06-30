@@ -2,13 +2,11 @@
 ### Written in the Written Description Language (WDL) version 1.0 more info [here](https://github.com/openwdl/wdl)
 
 ## Before running the pipeline
-* Have a working version of Java in your workspace
-  * Download the installer [here](https://www.java.com/en/download/manual.jsp) and copy to the machine
-
 * Have the latest version of Cromwell and Womtool in your workspace
-  * Download [here](https://github.com/broadinstitute/cromwell/releases/tag/48)
+  * `conda install -c bioconda cromwell`
+  * `conda install -c bioconda womtool` 
   
-* Have modules for FLASH2, minimap2, pandas, and B available
+* Have modules for FLASH2, minimap2, pandas, and Biopython available
   * `conda install -c bioconda flash2 `
   * `conda install -c bioconda minimap2`
   * `conda install -c anaconda pandas`
@@ -18,17 +16,17 @@
 
 ## Running the WDL
 * Validate the file
-  `java -jar womtool-48.jar validate <pipeline_name>.wdl`
+  `womtool validate <pipeline_name>.wdl`
   
   **NB: use the version number for your version of Womtool downloaded above**
 
 * Generate inputs file
-  `java -jar womtool-48.jar inputs <pipeline_name>.wdl > <your_projects_name>_inputs.json`
+  `womtool inputs <pipeline_name>.wdl > <your_projects_name>_inputs.json`
   
   **NB: see the "Filling in the json" section below for detailed description of input needed**
  
 * Run the pipeline with your inputs
-  `java -jar cromwell-48.jar run <pipeline_name>.wdl --inputs <your_projects_name>_inputs.json`
+  `cromwell run <pipeline_name>.wdl --inputs <your_projects_name>_inputs.json`
   
 ## Filling in the json
 A generalized filled in example of each .json is below
