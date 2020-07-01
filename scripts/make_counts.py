@@ -1,6 +1,4 @@
-###Make dictionary of parsed barcode - oligo pairs
-###go through fastq file to pull barcodes and oligos for each
-
+###go through fastq file to pull barcodes
 
 import pandas as pd
 import os
@@ -31,7 +29,7 @@ with open("%s/%s.match" % (current_path, out_id), "w") as match_oligo:
                 seq_only = record.seq
                 # seq_only = seq_only.reverse_complement()
                 seq_only = str(seq_only)
-
+                # Grab the first 20 bases of the sequence
                 bc_seq = seq_only[0:20]
 
                 # Check for barcode presence in the dictionary
