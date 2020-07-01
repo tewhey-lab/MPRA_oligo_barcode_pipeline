@@ -6,9 +6,9 @@ use warnings;
 my $fasta = $ARGV[0];
 my $read = $ARGV[1];
 my $out = $ARGV[2];
-my $link_A_bc = $ARGV[3];
-my $link_A_oligo = $ARGV[4];
-my $end_A_oligo = $ARGV[5];
+my $link_A_bc = $ARGV[3]; #Any length, we use 6 bases
+my $link_A_oligo = $ARGV[4]; #4 bases
+my $end_A_oligo = $ARGV[5]; #4 bases
 my $MIN_SEQ_SIZE = $ARGV[6];
 
 open (FASTA, "$fasta") or die("ERROR: can not read file ($fasta): $!\n");
@@ -46,36 +46,43 @@ while (<FASTA>){
     next;
   }
 
-# If checking a Read 1 file take the reverse complement
+# If the flashed file placed read 1 second, take the reverse complement
   if($read == 1){
     $revcomp = reverse($r1);
   	$revcomp =~ tr/ACGTNacgtn/TGCANtgcan/;
     $r1 = $revcomp;
   }
-# Check for presence of linker A
+# Check for the barcode linker start 18 bases in and look in the next 10 bases for the linking sequence.
+# This accounts for possible deletions or insertions.
   if(index(substr($r1, 18, 10), $link_A_bc) != -1){
     $link_index = index(substr($r1, 18, 10), $link_A_bc);
     $link_index += 18;
   }
+# If the linker is not present then reject the sequence.
   if(index(substr($r1, 18, 10), $link_A_bc) == -1){
     print REJECT "$id\n";
   }
 
+# If the linker is found at position 18, 19, or 20 set the start of the barcode as the start of the sequence
   if($link_index - 20 <= 0){
     $barcode_start = 0;
     $barcode_seq = substr($r1, $barcode_start, 20);
   }
+# If the linker is found at position 21 or 22 then subtract 20 so that the barcode is the 20 bases immediately before the linker
   if($link_index - 20 > 0){
     $barcode_start = $link_index - 20;
     $barcode_seq = substr($r1, $barcode_start, 20);
   }
 
+# Look for the oligo end of the linker sequence starting 30 bases from where the barcode linker was found and look at the next 12 bases
   $oligo_start = index(substr($r1, $link_index+30, 12), $link_A_oligo);
+# If the oligo end of the linker sequence is not found then set it to zero, essentially making an arbitrary cut to start the oligo
   if($oligo_start == -1){
     $oligo_start = 0;
   }
+# Add 34 + barcode end to the oligo start to put the start of the oligo at the end of the oligo linker sequence
   $oligo_start += 34+$link_index;
-# Find the end of the oligo
+# Find the end of the oligo with respect to the end of the sequence
   $oligo_end = index(substr($r1, -18, 6), $end_A_oligo);
   $oligo_end += -18;
 
@@ -86,7 +93,7 @@ while (<FASTA>){
   $revcomp_oligo =~ tr/ACGTNacgtn/TGCANtgcan/;
   $oligo_seq = $revcomp_oligo;
 
-
+# Print to match if it pulled an actual id
   if($id ne "+"){
     print MATCH join("\t", $id, $barcode_seq, $oligo_seq, $oligo_length."\n");
   }
