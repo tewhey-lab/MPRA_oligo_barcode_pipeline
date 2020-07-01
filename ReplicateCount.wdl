@@ -3,14 +3,14 @@
 # Requires the parsed file output from MPRAMatch
 
 workflow ReplicateCount {
-  Array[String] replicate_fastq
-  Array[String] replicate_id
-  Array[Pair[String,String]] fastq_id = zip(replicate_fastq, replicate_id)
-  File parsed
-  Int read_b_number
-  String flags
-  String id_out
-  String working_directory
+  Array[File] replicate_fastq #Array of replicate fastq files. Each replicate should have one file.
+  Array[String] replicate_id #Identifier for each replicate listed in the replicate fastq list - should be in the same order as replicate fastqs
+  Array[Pair[File,String]] fastq_id = zip(replicate_fastq, replicate_id) #Pairing the fastq file to the id
+  File parsed #Output of MPRAMatch pipeline
+  Int read_b_number #2 if MPRAMatch was run with read_a as R1 and read_b as R2, otherwise it should be 1
+  String flags #-ECSM -A 0.05 (Error, Cigar, Start/Stop, MD, Error Cutoff)
+  String id_out #Overall project id for the final count table
+  String working_directory #directory relative to the WDL where the scripts live
 
   scatter (replicate in fastq_id) {
     call prep_counts { input:
@@ -42,7 +42,7 @@ workflow ReplicateCount {
 }
 
 task prep_counts {
-  #File make_counts
+  # Grab the barcodes and check that they exist in the dictionary - if they don't exist write them to a seqparate fastq
   File sample_fastq
   File parsed
   String working_directory
@@ -55,7 +55,7 @@ task prep_counts {
     }
   }
 task associate {
-  #File assoc
+  # Associate the matched barcodes with the associated oligos
   File matched
   File parsed
   Int read_b_number
@@ -70,6 +70,7 @@ task associate {
     }
   }
 task make_infile {
+  # make a list of the association output and the tag ids to pass to the barcode compilation function
   Array[File] tag_files
   Array[String] tag_ids
   String working_directory
@@ -82,7 +83,7 @@ task make_infile {
     }
   }
 task make_count_table {
-  #File compile
+  # Compile barcodes into a count table - columns from left to right: barcode oligo (Error CIGAR MD Aln_Start:Stop) [replicate names]
   File list_inFile
   String working_directory
   String? flags = ""
