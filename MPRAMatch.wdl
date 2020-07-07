@@ -60,6 +60,10 @@ workflow MPRAMatch {
                   counted=Ct_Seq.out,
                   id_out=id_out
                 }
+  call preseq { input:
+                 counted=Ct_Seq.out,
+                 id_out=id_out
+              }
 
   output {
     File out=Parse.out
