@@ -1,6 +1,8 @@
-### filter out blacklisted barcodes from count data
-
 #!/usr/bin/perl
+
+## The FASTA input should be your reference FASTA used in the MPRAMatch.wdl pipeline
+## The FASTA should be broken into groups for each "project" i.e. negative controls, positive controls, experimental
+## Any oligos which belong to more than one group should processed separately, and the two projects should be separated by a comma
 
 use strict;
 use warnings;

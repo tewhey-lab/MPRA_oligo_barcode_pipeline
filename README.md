@@ -68,11 +68,11 @@ _ReplicateCount.wdl_
 It is suggested that you note the job id generated within cromwell for assistance finding these files at a later date.
 
 The output file from MPRAMatch needed as input for the ReplicateCount pipeline can be found at:
-  * Parsed File    : `cromwell-exectutions/MPRAMatch/<job_id>/call-Parse/execution/<id_out>.merged.match.enh.mapped.barcode.ct.parsed`
+  * Parsed File      : `cromwell-exectutions/MPRAMatch/<job_id>/call-Parse/execution/<id_out>.merged.match.enh.mapped.barcode.ct.parsed`
 
-The following file can then be input into the R pipeline [here](https://github.com/tewhey-lab/MPRA_tag_analysis) for analysis:
-  * Count File     : `cromwell-exectutions/ReplicateCount/<job_id>/call-make_count_table/execution/<id_out>.count`
-
+The following files can then be input into the R pipeline [here](https://github.com/tewhey-lab/MPRA_tag_analysis) for analysis:
+  * Count File       : `cromwell-exectutions/ReplicateCount/<job_id>/call-make_count_table/execution/<id_out>.count`
+  * Attributes Table : The output of `make_project_list.pl` and `make_attributes_oligo.pl`. If you want to bypass the use of `make_project_list.pl`, you can pass `make_attributes_oligo.pl` a tab delimited file with two columns, the first column should be the oligo names and the second column should be the project(s) that the associated oligo belongs to. If an oligo belongs to multiple projects they should be separated by commas.
 
 ## How the Pipelines work
 
