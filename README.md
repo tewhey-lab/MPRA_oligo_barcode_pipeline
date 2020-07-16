@@ -1,4 +1,4 @@
-# Tag Analysis Pipeline (two parts)
+# MPRA Oligo/barcode reconstruction and barcode counting pipeline (two parts)
 ### Written in the Written Description Language (WDL) version 1.0 more info [here](https://github.com/openwdl/wdl)
 
 ## Before running the pipeline
