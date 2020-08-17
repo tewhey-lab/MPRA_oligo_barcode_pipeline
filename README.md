@@ -13,7 +13,7 @@
   * `conda install -c anaconda pandas`
   * `conda install -c anaconda biopython`
 
-* Make sure all the available scripts (except for the WDL itself) are in a known directory (you will need to provide the path to this directory) in the working directory where the Cromwell and Womtool `.jar`s are present
+* Make sure all the available scripts (except for the WDL itself) are in a known directory (you will need to provide the path to this directory)
 
 ## Running the WDL
 * Validate the file
