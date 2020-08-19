@@ -68,7 +68,7 @@ _ReplicateCount.wdl_
 It is suggested that you note the job id generated within cromwell for assistance finding these files at a later date.
 
 The output file from MPRAMatch needed as input for the ReplicateCount pipeline can be found at:
-  * Parsed File      : `cromwell-exectutions/MPRAMatch/<job_id>/call-Parse/execution/<id_out>.merged.match.enh.mapped.barcode.ct.parsed`
+  * Parsed File      : `cromwell-executions/MPRAMatch/<job_id>/call-Parse/execution/<id_out>.merged.match.enh.mapped.barcode.ct.parsed`
 
 The following files can then be input into the R pipeline [here](https://github.com/tewhey-lab/MPRA_tag_analysis) for analysis:
   * Count File       : `cromwell-executions/ReplicateCount/<job_id>/call-make_count_table/execution/<id_out>.count`
