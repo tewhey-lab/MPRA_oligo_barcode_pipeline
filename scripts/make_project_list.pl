@@ -22,6 +22,9 @@ while (<FASTA>) {
     @header = split(/\s/, $_);
     @array = split(/\|/, $header[0]);
     $id = $array[0];
+    $id =~ s/^@/>/;
+    $id =~ s/^>//;
+    $id =~ s/\/1$//;
 
     print OUT $id . "\t" . $project_name . "\n";
   }
