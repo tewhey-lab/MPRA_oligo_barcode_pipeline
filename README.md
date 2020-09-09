@@ -6,12 +6,13 @@
   * `conda install -c bioconda cromwell`
   * `conda install -c bioconda womtool`
 
-* Have modules for FLASH2, minimap2, preseq, pandas, and Biopython available
+* Have modules for FLASH2, minimap2, preseq, pandas, reshape2, and Biopython available
   * `conda install -c bioconda flash2 `
   * `conda install -c bioconda minimap2`
   * `conda install -c bioconda preseq`
   * `conda install -c anaconda pandas`
   * `conda install -c anaconda biopython`
+  * `conda install -c r r-reshape2`
 
 * Make sure all the available scripts (except for the WDL itself) are in a known directory (you will need to provide the path to this directory)
 
@@ -41,6 +42,7 @@ _MPRAMatch.wdl_
        "MPRAMatch.read_b_number": "2",
        "MPRAMatch.seq_min": "100",
        "MPRAMatch.working_directory": "full/path/to/script/location",
+       "MPRAMatch.out_directory": "full/path/to/output/directory/"
        "MPRAMatch.id_out": "Your_Project_ID",
        "MPRAMatch.barcode_link": "6 bases at the barcode end of the sequence linking the barcode and oligo",
        "MPRAMatch.oligo_link": "4 bases at the oligo end of the sequence linking the barcode and oligo",
@@ -68,7 +70,7 @@ _ReplicateCount.wdl_
 It is suggested that you note the job id generated within cromwell for assistance finding these files at a later date.
 
 The output file from MPRAMatch needed as input for the ReplicateCount pipeline can be found at:
-  * Parsed File      : `cromwell-executions/MPRAMatch/<job_id>/call-Parse/execution/<id_out>.merged.match.enh.mapped.barcode.ct.parsed`
+  * Parsed File      : `/specified/output/directory/<id_out>.merged.match.enh.mapped.barcode.ct.parsed`
 
 The following files can then be input into the R pipeline [here](https://github.com/tewhey-lab/MPRA_tag_analysis) for analysis:
   * Count File       : `cromwell-executions/ReplicateCount/<job_id>/call-make_count_table/execution/<id_out>.count`
