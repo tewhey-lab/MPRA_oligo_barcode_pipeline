@@ -8,6 +8,7 @@ workflow MPRAMatch {
   Int read_b_number #2 if you followed the method above
   Int seq_min #Minimum acceptable sequence length when separating the barcodes and oligos
   String working_directory #String of the directory relative to the WDL where the other required scripts live
+  String out_directory #String of the directory that all files will be copied to
   String id_out #Project identifier - all files will have this as the prefix for their name
   String barcode_link #6 base sequence on the barcode end of the link between the barcode and oligo - orientation barcode to oligo
   String oligo_link #4 base sequence on the oligo end of the link between the barcode and oligo - orientation barcode to oligo
@@ -64,10 +65,27 @@ workflow MPRAMatch {
                  counted=Ct_Seq.out,
                  id_out=id_out
               }
-
-  output {
-    File out=Parse.out
-     }
+  call qc_plot { input:
+                    parsed=Parse.out,
+                    working_directory=working_directory,
+                    id_out=id_out
+              }
+  call relocate { input:
+                    flashed=Flash.out,
+                    matched=Pull_Barcodes.out1,
+                    rejected=Pull_Barcodes.out2,
+                    organized_fasta=Rearrange.out,
+                    sam_file=MiniMap.out1,
+                    map_log=MiniMap.out2,
+                    MPRA_out=SAM2MPRA.out,
+                    sorted=Sort.out,
+                    counted=Ct_Seq.out,
+                    parsed=Parse.out,
+                    preseq_hist=preseq.hist,
+                    preseq_res=preseq.res,
+                    qc_plot=qc_plot.plots,
+                    out_directory=out_directory
+                  }
   }
 
 task Flash {
@@ -170,7 +188,17 @@ task Parse {
     File out="${id_out}.merged.match.enh.mapped.barcode.ct.parsed"
     }
   }
-
+task qc_plot {
+  File parsed
+  String working_directory
+  String id_out
+  command {
+    Rscript ${working_directory}/mapping_QC_plots.R ${parsed} ${id_out}
+    }
+  output {
+    File plots="${id_out}_barcode_qc.pdf"
+    }
+  }
 task preseq {
   # Determine sequencing depth
   File counted
@@ -182,5 +210,24 @@ task preseq {
   output {
     File hist="${id_out}.merged.match.enh.mapped.barcode.ct.hist"
     File res="${id_out}.merged.match.enh.mapped.barcode.ct.hist.preseq"
+   }
+ }
+task relocate{
+ File flashed
+ File matched
+ File rejected
+ File organized_fasta
+ File sam_file
+ File map_log
+ File MPRA_out
+ File sorted
+ File counted
+ File parsed
+ File preseq_hist
+ File preseq_res
+ File qc_plot
+ String out_directory
+ command {
+     mv ${flashed} ${matched} ${rejected} ${organized_fasta} ${sam_file} ${map_log} ${MPRA_out} ${sorted} ${counted} ${parsed} ${preseq_hist} ${preseq_res} ${qc_plot} ${out_directory}
    }
  }
