@@ -65,7 +65,7 @@ workflow MPRAMatch {
                  counted=Ct_Seq.out,
                  id_out=id_out
               }
-  call qc_plot { input:
+  call qc_plot_t { input:
                     parsed=Parse.out,
                     working_directory=working_directory,
                     id_out=id_out
@@ -83,7 +83,7 @@ workflow MPRAMatch {
                     parsed=Parse.out,
                     preseq_hist=preseq.hist,
                     preseq_res=preseq.res,
-                    qc_plot=qc_plot.plots,
+                    qc_plot=qc_plot_t.plots,
                     out_directory=out_directory
                   }
   }
@@ -188,7 +188,7 @@ task Parse {
     File out="${id_out}.merged.match.enh.mapped.barcode.ct.parsed"
     }
   }
-task qc_plot {
+task qc_plot_t {
   File parsed
   String working_directory
   String id_out
