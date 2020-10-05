@@ -2,9 +2,9 @@
   "ReplicateCount.parsed": "File",
   "ReplicateCount.read_b_number": "Int",
   "ReplicateCount.working_directory": "String",
+  "ReplicateCount.out_directory":"String",
   "ReplicateCount.id_out": "String",
   "ReplicateCount.flags": "String",
-  "ReplicateCount.replicate_fastq": "Array[String]",
+  "ReplicateCount.replicate_fastq": "Array[File]",
   "ReplicateCount.replicate_id": "Array[String]"
-
 }
