@@ -59,6 +59,7 @@ _ReplicateCount.wdl_
        "ReplicateCount.parsed": "full/path/to/MPRAMatch/output.merged.match.enh.mapped.barcode.ct.parsed",
        "ReplicateCount.read_b_number": "2 (same as used for MPRAMatch)",
        "ReplicateCount.working_directory": "full/path/to/script/location",
+       "ReplicateCount.out_directory": "full/path/to/output/directory/",
        "ReplicateCount.id_out": "Your_Project_ID",
        "ReplicateCount.flags": "-ECSM -A 0.05 (suggested)",
        "ReplicateCount.replicate_fastq": ["full/path/to/celltype1/rep1.fastq.gz", "full/path/to/celltype1/rep2.fastq.gz", "full/path/to/celltype1/rep3.fastq.gz", "full/path/to/celltype2/rep1.fastq.gz",...],
