@@ -11,6 +11,7 @@ workflow ReplicateCount {
   String flags #-ECSM -A 0.05 (Error, Cigar, Start/Stop, MD, Error Cutoff)
   String id_out #Overall project id for the final count table
   String working_directory #directory relative to the WDL where the scripts live
+  String out_directory #directory relative to the WDL where relevant files will be moved
 
   scatter (replicate in fastq_id) {
     call prep_counts { input:
@@ -39,6 +40,12 @@ workflow ReplicateCount {
                             flags=flags,
                             id_out=id_out
                           }
+  call relocate { input:
+                    matched = prep_counts.out,
+                    tag_files = associate.outF,
+                    count_out = make_count_table.out,
+                    out_directory = out_directory
+                  }
 }
 
 task prep_counts {
@@ -93,5 +100,14 @@ task make_count_table {
     }
   output {
     File out="${id_out}.count"
+    }
+  }
+task relocate {
+  Array[File] matched
+  Array[File] tag_files
+  File count_out
+  String out_directory
+  command {
+    mv ${matched} ${tag_files} ${count_out} ${out_directory}
     }
   }
