@@ -5,7 +5,7 @@ workflow MPRAMatch {
   File read_a #R1 fastq
   File read_b #R2 fastq
   File reference_fasta #Oligo sequences with names (can be the oligo order sheet)
-  Int read_b_number #2 if you followed the method above
+  Int read_b_number #2 if you followed the method above, otherwise 1
   Int seq_min #Minimum acceptable sequence length when separating the barcodes and oligos
   String working_directory #String of the directory relative to the WDL where the other required scripts live
   String out_directory #String of the directory that all files will be copied to
