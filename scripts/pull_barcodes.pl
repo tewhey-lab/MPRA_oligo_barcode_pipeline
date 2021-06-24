@@ -60,7 +60,9 @@ while (<FASTA>){
   }
 # If the linker is not present then reject the sequence.
   if(index(substr($r1, 18, 10), $link_A_bc) == -1){
-    print REJECT "$id\n";
+    if($id ne "+"){
+      print REJECT "$id\n";
+    }
   }
 
 # If the linker is found at position 18, 19, or 20 set the start of the barcode as the start of the sequence
