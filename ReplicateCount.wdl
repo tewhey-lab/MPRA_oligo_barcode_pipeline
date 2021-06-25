@@ -17,6 +17,7 @@ workflow ReplicateCount {
     call prep_counts { input:
                           working_directory=working_directory,
                           sample_fastq=replicate.left,
+                          read_b_number=read_b_number,
                           parsed=parsed,
                           sample_id=replicate.right
                         }
@@ -52,10 +53,11 @@ task prep_counts {
   # Grab the barcodes and check that they exist in the dictionary - if they don't exist write them to a seqparate fastq
   File sample_fastq
   File parsed
+  Int read_b_number
   String working_directory
   String sample_id
   command {
-    python ${working_directory}/make_counts.py ${sample_fastq} ${parsed} ${sample_id}
+    python ${working_directory}/make_counts.py ${sample_fastq} ${parsed} ${sample_id} ${read_b_number}
     }
   output {
     File out="${sample_id}.match"

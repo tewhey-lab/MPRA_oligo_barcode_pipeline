@@ -16,6 +16,7 @@ from Bio import SeqIO
 fastqfile = argv[1]
 dictfile = argv[2]
 out_id = argv[3]
+read_number = argv[4]
 
 current_path = os.getcwd()
 
@@ -27,10 +28,14 @@ with open("%s/%s.match" % (current_path, out_id), "w") as match_oligo:
         with gzip.open(fastqfile, "rt") as handle:
             for record in SeqIO.parse(handle, "fastq"):
                 seq_only = record.seq
-                # seq_only = seq_only.reverse_complement()
+                if read_number != 2:
+                    seq_only = seq_only.reverse_complement()
                 seq_only = str(seq_only)
                 # Grab the first 20 bases of the sequence
-                bc_seq = seq_only[0:20]
+                if read_number == 2:
+                    bc_seq = seq_only[0:20]
+                if read_number != 2:
+                    bc_seq = seq_only[-21:]
 
                 # Check for barcode presence in the dictionary
                 if bc_seq in BC_dict:
