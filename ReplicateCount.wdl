@@ -84,9 +84,9 @@ task make_infile {
   Array[String] tag_ids
   String working_directory
   String id_out
-  command {
+  command <<<
     python ${working_directory}/make_infile.py ${sep=',' tag_ids} ${sep=',' tag_files} ${id_out}
-  }
+  >>>
   output {
     File out="${id_out}_samples.txt"
     }
