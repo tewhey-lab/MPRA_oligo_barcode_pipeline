@@ -30,7 +30,6 @@ with open("%s/%s.match" % (current_path, out_id), "w") as match_oligo:
         with gzip.open(fastqfile, "rt") as handle:
             print("Reading Records...")
             for record in SeqIO.parse(handle, "fastq"):
-                sys.stderr.write("%s\n" % record.name)
                 seq_only = record.seq
                 if read_number != 2:
                     seq_only = seq_only.reverse_complement()
