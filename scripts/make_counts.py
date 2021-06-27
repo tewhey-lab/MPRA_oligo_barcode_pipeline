@@ -9,7 +9,7 @@ import pathlib
 import gzip
 argv = sys.argv
 
-from Bio.Alphabet import IUPAC
+#from Bio.Alphabet import IUPAC
 from Bio.Seq import Seq
 from Bio import SeqIO
 
@@ -26,7 +26,7 @@ BC_dict = dict(zip(BC_list[0], BC_list[1]))
 with open("%s/%s.match" % (current_path, out_id), "w") as match_oligo:
     with open("%s/%s.reject.fastq" % (current_path, out_id), "w") as reject_fastq:
         with gzip.open(fastqfile, "rt") as handle:
-            sys.stderr.write("Reading Records\n")
+            print("Reading Records\n")
             for record in SeqIO.parse(handle, "fastq"):
                 sys.stderr.write("%s\n" % record.name)
                 seq_only = record.seq
