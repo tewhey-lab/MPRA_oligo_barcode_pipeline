@@ -37,7 +37,7 @@ with open("%s/%s.match" % (current_path, out_id), "w") as match_oligo:
                 if read_number == 2:
                     bc_seq = seq_only[0:20]
                 if read_number != 2:
-                    bc_seq = seq_only[-21:]
+                    bc_seq = seq_only[-20:]
 
                 # Check for barcode presence in the dictionary
                 if bc_seq in BC_dict:
