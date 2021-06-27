@@ -20,6 +20,7 @@ read_number = argv[4]
 
 current_path = os.getcwd()
 
+print("Pulling Barcode/Oligo Pairs\n")
 BC_list = pd.read_table(dictfile, header=None, index_col=False, usecols=[0,1])
 BC_dict = dict(zip(BC_list[0], BC_list[1]))
 
