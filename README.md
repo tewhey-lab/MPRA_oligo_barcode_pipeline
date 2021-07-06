@@ -13,6 +13,25 @@
 
 * Make sure all the available scripts (except for the WDL itself) are in a known directory (you will need to provide the path to this directory)
 
+## Suggested directory organization chart:
+```
+	- overall_project/
+		- specific_project/
+			- MPRAmatch_output/
+			-  MPRAcount_output/
+			- MPRAanalyze_output/
+			- setup/ 	(copy from cloned repository)
+			- fastq/
+			- submission/
+		- cloned_repository/
+			- graphics/
+			- inputs/
+			- scripts/
+			- setup/
+			- MPRAcount.wdl
+			- MPRAmatch.wdl
+			- README.md
+
 ## Running the WDL
 * Validate the file
   `womtool validate <pipeline_name>.wdl`
@@ -65,7 +84,9 @@ _MPRAcount.wdl_
      }
  ```
 
-**NB: For the replicate fastq files, a single fastq.gz file is required for each replicate, if there are more than one they should be concatenated together**
+**NB: For the replicate fastq files, a single fastq.gz file is required for each replicate, if there are more than one they should be concatenated together. This can be done quickly using the `merge_*.sh` files in the `setup` folder**
+
+It is suggested to use `fill_<pipeline>_json.sh` scripts to help fill in the jsons above instead of trying to fill them out manually.
 
 ## Outputs Needed at later steps
 It is suggested that you note the job id generated within cromwell for assistance finding these files at a later date.
