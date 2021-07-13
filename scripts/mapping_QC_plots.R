@@ -67,7 +67,7 @@ h <- ggplot(flagP_ct, aes(x = row,y = Freq, fill = Flag)) +
   geom_bar(stat="identity") + 
   theme_bw() + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
   ggtitle("Sequence Mapping") +
-  geom_text(aes(label = percent), position = position_stack(vjust = 0.5))
+  geom_text(aes(label = percent), position = position_stack(),vjust = 0.5)
 
 
 pdf(paste0(id_out,"_barcode_qc.pdf"), width = 10, height = 10) # Open a new pdf file
