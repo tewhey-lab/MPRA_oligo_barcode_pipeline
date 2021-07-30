@@ -23,7 +23,7 @@ my $id;
 my $r1;
 my $revcomp;
 my $revcomp_barcode;
-my $link_index;
+my $link_index=20;
 my $oligo_start;
 my $oligo_end;
 my $oligo_length;
