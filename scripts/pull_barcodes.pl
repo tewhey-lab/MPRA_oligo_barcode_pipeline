@@ -85,7 +85,10 @@ while (<FASTA>){
 # Add 34 + barcode end to the oligo start to put the start of the oligo at the end of the oligo linker sequence
   $oligo_start += 34+$link_index;
 # Find the end of the oligo with respect to the end of the sequence
-  $oligo_end = index(substr($r1, -18, 6), $end_A_oligo);
+  $oligo_end = index(substr($r1, -18, 8), $end_A_oligo);
+  if($oligo_end == -1){
+    $oligo_end = 2;
+  }
   $oligo_end += -18;
 
 # Define the substring that is the oligo
