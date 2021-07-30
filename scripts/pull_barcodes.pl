@@ -100,6 +100,6 @@ while (<FASTA>){
 
 # Print to match if it pulled an actual id
   if($id ne "+"){
-    print MATCH join("\t", $id, $barcode_seq, $oligo_seq, $oligo_length."\n");
+    print MATCH join("\t", $id, $barcode_seq, $oligo_seq, $oligo_length, length($r1)."\n");
   }
 }
