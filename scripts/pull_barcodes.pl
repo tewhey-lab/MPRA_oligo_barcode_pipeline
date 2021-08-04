@@ -81,7 +81,7 @@ while (<FASTA>){
 # If the oligo end of the linker sequence is not found then set it to zero, essentially making an arbitrary cut to start the oligo
   if($oligo_start == -1){
     $oligo_start = 0;
-    $oligo_start = $1 if substr($r1, $link_index+30, 12) =~ /A[ACTG][ACTG]G/;
+    $oligo_start = $-[0] if substr($r1, $link_index+30, 12) =~ /A[ACTG][ACTG]G/;
   }
 # Add 34 + barcode end to the oligo start to put the start of the oligo at the end of the oligo linker sequence
   $oligo_start += 34+$link_index;
