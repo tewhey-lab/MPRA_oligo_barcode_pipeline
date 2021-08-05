@@ -79,7 +79,8 @@ fasta<-read.table(fasta_file,header=FALSE)
 # grid.arrange(a,d,f,h)
 # dev.off()
 
-
+message(max(flags$V7))
+message(min(flags$V7))
 
 fasta<-data.frame("ID"=fasta[seq(1,nrow(fasta),2),],"seq"=fasta[seq(2,nrow(fasta),2),])
 fasta[,"ID"]<-gsub("^>","",fasta[,"ID"])
