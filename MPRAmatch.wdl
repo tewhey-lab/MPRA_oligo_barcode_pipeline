@@ -66,7 +66,9 @@ workflow MPRAmatch {
                  id_out=id_out
               }
   call qc_plot_t { input:
-                    parsed=Parse.out,
+                    parsed=Parse.out_parsed,
+                    hist=Parse.out_hist,
+                    reference_fasta=reference_fasta,
                     working_directory=working_directory,
                     id_out=id_out
               }
@@ -183,17 +185,21 @@ task Parse {
   String id_out
   command {
     perl ${working_directory}/parse_map.pl ${counted} > ${id_out}.merged.match.enh.mapped.barcode.ct.parsed
+    awk '($5 == 0)' ${counted} | awk '{ct[$2]++;cov[$2]+=$4;}END{for(i in ct)print i "\t" ct[i] "\t" cov[i]}' > ${id_out}.merged.rc.match.enh.mapped.barcode.ct.plothist
     }
   output {
-    File out="${id_out}.merged.match.enh.mapped.barcode.ct.parsed"
+    File out_parsed="${id_out}.merged.match.enh.mapped.barcode.ct.parsed"
+    File out_hist="${id_out}.merged.rc.match.enh.mapped.barcode.ct.plothist"
     }
   }
 task qc_plot_t {
   File parsed
+  File hist
+  File reference_fasta
   String working_directory
   String id_out
   command {
-    Rscript ${working_directory}/mapping_QC_plots.R ${parsed} ${id_out}
+    Rscript ${working_directory}/mapping_QC_plots.R ${parsed} ${hist} ${reference_fasta} ${id_out}
     }
   output {
     File plots="${id_out}_barcode_qc.pdf"
