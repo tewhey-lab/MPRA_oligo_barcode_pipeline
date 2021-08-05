@@ -142,6 +142,6 @@ per<-round(seen/total,4)*100
 
 grid.title<-paste0(id_out," - ",per,"% captured - ",seen,"/",total)
 
-pdf(paste0(id_out,"_barcode_plots.pdf"), width = 10, height = 10) # Open a new pdf file
+pdf(paste0(id_out,"_barcode_qc.pdf"), width = 10, height = 10) # Open a new pdf file
 grid.arrange(plotA,plotB,plotC,plotD,top=grid.title)
 dev.off()
