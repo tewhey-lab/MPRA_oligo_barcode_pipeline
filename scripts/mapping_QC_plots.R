@@ -2,6 +2,7 @@ library(reshape2)
 library(ggplot2)
 library(gridExtra)
 
+options(stringsAsFactors = FALSE)
 args = commandArgs(trailingOnly=TRUE)
 
 parsed_file <- args[1]
