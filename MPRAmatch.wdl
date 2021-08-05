@@ -185,7 +185,7 @@ task Parse {
   String id_out
   command {
     perl ${working_directory}/parse_map.pl ${counted} > ${id_out}.merged.match.enh.mapped.barcode.ct.parsed
-    awk '($5 == 0)' ${counted} | awk '{ct[$2]++;cov[$2]+=$4;}END{for(i in ct)print i "\t" ct[i] "\t" cov[i]}' > ${id_out}.merged.rc.match.enh.mapped.barcode.ct.plothist
+    awk '($5 == 0)' ${counted} | awk '{ct[$2]++;cov[$2]+=$4;}END{for(i in ct)print i "\t" ct[i] "\t" cov[i]}' > ${id_out}.merged.match.enh.mapped.barcode.ct.plothist
     }
   output {
     File out_parsed="${id_out}.merged.match.enh.mapped.barcode.ct.parsed"

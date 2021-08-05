@@ -133,7 +133,7 @@ plotD<-ggplot(flag.ct, aes(x = row,y = Freq, fill = Flag)) +
   geom_bar(stat="identity") + 
   theme_bw() + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
   ggtitle("Sequence Mapping") +
-  geom_text(aes(label = percent), position = position_stack(vjust = 0.5))
+  geom_text(aes(label = percent), position = position_stack(),vjust = 0.5)
 
 seen<-nrow(count.hist)
 total<-nrow(fasta)
