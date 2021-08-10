@@ -44,7 +44,20 @@ while (<TAGS>){
 }
 close TAGS;
 
+my %approved_multiHit;
+my $id;
 
+while (<MULTIHIT>)
+        {
+        chomp;
+        @inline = split("\t");
+        foreach $id (@inline)
+                {
+                $approved_multiHit{$inline[0]}{$id}=1;
+                }
+        }
+
+				
 my $cur_tag;
 my $cur_loc;
 my $cur_flag;
