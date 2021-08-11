@@ -82,7 +82,8 @@ workflow MPRAmatch {
                     MPRA_out=SAM2MPRA.out,
                     sorted=Sort.out,
                     counted=Ct_Seq.out,
-                    parsed=Parse.out,
+                    parsed=Parse.out_parsed,
+                    plothist=Parse.out_hist,
                     preseq_hist=preseq.hist,
                     preseq_res=preseq.res,
                     qc_plot=qc_plot_t.plots,
@@ -229,11 +230,12 @@ task relocate{
  File sorted
  File counted
  File parsed
+ File plothist
  File preseq_hist
  File preseq_res
  File qc_plot
  String out_directory
  command {
-     mv ${flashed} ${matched} ${rejected} ${organized_fasta} ${sam_file} ${map_log} ${MPRA_out} ${sorted} ${counted} ${parsed} ${preseq_hist} ${preseq_res} ${qc_plot} ${out_directory}
+     mv ${flashed} ${matched} ${rejected} ${organized_fasta} ${sam_file} ${map_log} ${MPRA_out} ${sorted} ${counted} ${parsed} ${plothist} ${preseq_hist} ${preseq_res} ${qc_plot} ${out_directory}
    }
  }
