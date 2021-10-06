@@ -7,6 +7,7 @@ workflow MPRAcount {
   Array[String] replicate_id #Identifier for each replicate listed in the replicate fastq list - should be in the same order as replicate fastqs
   Array[Pair[File,String]] fastq_id = zip(replicate_fastq, replicate_id) #Pairing the fastq file to the id
   File parsed #Output of MPRAMatch pipeline
+  File acc_id
   Int read_b_number #2 if MPRAMatch was run with read_a as R1 and read_b as R2, otherwise it should be 1
   String flags #-ECSM -A 0.05 (Error, Cigar, Start/Stop, MD, Error Cutoff)
   String id_out #Overall project id for the final count table
@@ -41,10 +42,20 @@ workflow MPRAcount {
                             flags=flags,
                             id_out=id_out
                           }
+  call count_QC { input:
+                    count_out = make_count_table.count,
+                    out_directory = out_directory,
+                    working_directory = working_directory,
+                    id_out = id_out,
+                    acc_id = acc_id
+                }
   call relocate { input:
                     matched = prep_counts.out,
                     tag_files = associate.outF,
-                    count_out = make_count_table.out,
+                    count_out = make_count_table.count,
+                    count_log = make_count_table.log,
+                    count_stats = make_count_table.log.stats,
+                    cond_out = count_QC.out
                     out_directory = out_directory
                   }
 }
@@ -97,19 +108,45 @@ task make_count_table {
   String working_directory
   String? flags = ""
   String id_out
+  command <<<
+    perl ${working_directory}/compile_bc.pl ${flags} ${list_inFile} ${id_out}.count > ${id_out}.log
+    awk '{if(NR%7==1){sum=0;good=0}
+      if(NR%7==1){printf "%s\t",$3; printf "%s\t","OL45";}
+      if(NR%7==3){sum+=$3}
+      if(NR%7==4){printf "%0.f\t", $2; printf "%0.f\t", $3;sum+=$3;good+=$3;}
+      if(NR%7==5){sum+=$3}
+      if(NR%7==6){sum+=$3}
+      if(NR%7==0){printf "%0.f\t", sum; printf "%.2f\n", good/(sum)*100;}
+      }' ${id_out}.log > ${id_out}.log.stats
+    >>>
+  output {
+    File count="${id_out}.count"
+    File log="${id_out}.log"
+    File stats="${id_out}.log.stats"
+    }
+  }
+task count_QC {
+  File acc_id
+  File count_out
+  String id_out
+  String out_directory
+  String working_directory
   command {
-    perl ${working_directory}/compile_bc.pl ${flags} ${list_inFile} ${id_out}.count
+    Rscript ${working_directory}/count_QC.R ${acc_id} ${count_out} ${id_out} ${out_directory}
     }
   output {
-    File out="${id_out}.count"
+    File out="${id_out}_condition.txt"
     }
   }
 task relocate {
   Array[File] matched
   Array[File] tag_files
   File count_out
+  File count_log
+  File count_stats
+  File cond_out
   String out_directory
   command {
-    mv ${matched} ${tag_files} ${count_out} ${out_directory}
+    mv ${matched} ${tag_files} ${count_out} ${count_log} ${count_stats} ${cond_out} ${out_directory}
     }
   }
