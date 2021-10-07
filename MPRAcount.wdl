@@ -146,7 +146,7 @@ task relocate {
   File count_stats
   File cond_out
   String out_directory
-  command {
-    mv ${matched} ${tag_files} ${count_out} ${count_log} ${count_stats} ${cond_out} ${out_directory}
-    }
+  command <<<
+    mv ${sep=' ', matched} ${sep=' ', tag_files} ${count_out} ${count_log} ${count_stats} ${cond_out} ${out_directory}
+    >>>
   }
