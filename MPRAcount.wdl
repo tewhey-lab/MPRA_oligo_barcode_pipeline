@@ -55,7 +55,7 @@ workflow MPRAcount {
                     count_out = make_count_table.count,
                     count_log = make_count_table.log,
                     count_stats = make_count_table.log.stats,
-                    cond_out = count_QC.out
+                    cond_out = count_QC.out,
                     out_directory = out_directory
                   }
 }
