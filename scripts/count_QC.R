@@ -56,9 +56,10 @@ for(celltype in unique(cell_reps$celltype)){
 		indv_rep_bcs[[celltype]][[rep]] <- ggplot(indv_hist, aes(x=Freq)) + geom_histogram(bins=200) + geom_vline(xintercept=10, col="red") + xlab("Barcodes per Oligo") + ggtitle(paste0("Barcode Count ", rep, "\n", indv_gt10, " Oligos with > 10 Barcodes")) + theme_light()
 		indv_agg <- aggregate(. ~Oligo, data=dataCount[,c("Oligo",rep)], FUN=sum)
 		colnames(indv_agg) <- c("Oligo","counts")
-		counts_bound <- as.numeric(quantile(indv_agg$counts, seq(0,1,0.01))[100])
+		counts_bound <- as.numeric(quantile(indv_agg$counts, seq(0,1,0.01))[91])
 		indv_ct_gt20 <- nrow(indv_agg[which(indv_agg$counts>20),])
-		indv_rep_counts[[celltype]][[rep]] <- ggplot(indv_agg, aes(x=counts)) + geom_histogram(bins=200) + geom_vline(xintercept=10, col="red") + xlim(0,counts_bound) + xlab("Counts per Oligo") + ggtitle(paste0("Oligo Count ", rep, "\n", indv_ct_gt20, " Oligos with Count > 20")) + theme_light()
+		max_ct <- max(indv_agg$counts)
+		indv_rep_counts[[celltype]][[rep]] <- ggplot(indv_agg, aes(x=counts)) + geom_histogram(bins=200) + geom_vline(xintercept=10, col="red") + xlim(0,counts_bound) + xlab("Counts per Oligo") + ggtitle(paste0("Oligo Count ", rep, "\n", indv_ct_gt20, " Oligos with Count > 20, max count = ", max_ct)) + theme_light()
 	}
 	message("plotting")
 	grid.title <- paste0("Individual Replicate Barcode Histograms - ", celltype, "\nTotal Oligos: ", total_oligos)

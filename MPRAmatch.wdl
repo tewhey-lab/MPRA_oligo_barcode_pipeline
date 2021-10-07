@@ -190,7 +190,7 @@ task Parse {
     >>>
   output {
     File out_parsed="${id_out}.merged.match.enh.mapped.barcode.ct.parsed"
-    File out_hist="${id_out}.merged.rc.match.enh.mapped.barcode.ct.plothist"
+    File out_hist="${id_out}.merged.match.enh.mapped.barcode.ct.plothist"
     }
   }
 task qc_plot_t {
