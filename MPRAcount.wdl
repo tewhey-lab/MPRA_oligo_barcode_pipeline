@@ -54,7 +54,7 @@ workflow MPRAcount {
                     tag_files = associate.outF,
                     count_out = make_count_table.count,
                     count_log = make_count_table.log,
-                    count_stats = make_count_table.log.stats,
+                    count_stats = make_count_table.stats,
                     cond_out = count_QC.out,
                     out_directory = out_directory
                   }
@@ -117,12 +117,12 @@ task make_count_table {
       if(NR%7==5){sum+=$3}
       if(NR%7==6){sum+=$3}
       if(NR%7==0){printf "%0.f\t", sum; printf "%.2f\n", good/(sum)*100;}
-      }' ${id_out}.log > ${id_out}.log.stats
+      }' ${id_out}.log > ${id_out}.stats
     >>>
   output {
     File count="${id_out}.count"
     File log="${id_out}.log"
-    File stats="${id_out}.log.stats"
+    File stats="${id_out}.stats"
     }
   }
 task count_QC {
