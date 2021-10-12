@@ -138,7 +138,7 @@ task MiniMap {
   File organized_fasta
   String id_out
   command {
-    minimap2 --for-only -Y --secondary=no -m 10 -n 1 --end-bonus 12 -O 5 -E 1 -k 10 -2K50m --MD --eqx --cs=long -c -a ${reference_fasta} ${organized_fasta} > ${id_out}.merged.match.enh.sam 2> ${id_out}.merged.match.enh.log
+    minimap2 --for-only -Y --secondary=no -m 10 -n 1 -t 30 --end-bonus 12 -O 5 -E 1 -k 10 -2K50m --MD --eqx --cs=long -c -a ${reference_fasta} ${organized_fasta} > ${id_out}.merged.match.enh.sam 2> ${id_out}.merged.match.enh.log
     }
   output {
     File out1="${id_out}.merged.match.enh.sam"
