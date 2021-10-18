@@ -21,6 +21,7 @@ read_number = int(argv[4])
 current_path = os.getcwd()
 
 def open_by_suffix(self, filename):
+    self.filename=filename
     if filename.endswith('.gz'):
         return gzip.open(filename, 'rt')
     else:
