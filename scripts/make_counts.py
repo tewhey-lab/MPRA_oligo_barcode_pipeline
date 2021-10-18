@@ -52,4 +52,4 @@ with open("%s/%s.match" % (current_path, out_id), "w") as match_oligo:
                         match_oligo.write("%s\t%s\t%s\n" % (record.name,bc_seq,BC_dict[bc_seq]))
                     if bc_seq not in BC_dict:
                         SeqIO.write(record, reject_fastq, "fastq")
-                        reject_bc.write("%s\t%s\n" % (record.name,
+                        reject_bc.write("%s\t%s\n" % (record.name,bc_seq))
