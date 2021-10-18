@@ -20,14 +20,20 @@ read_number = argv[4]
 
 current_path = os.getcwd()
 
+def open_by_suffix(filename):
+    if filename.endswith('.gz'):
+        return gzip.open(filename, 'rt')
+    else:
+        return open(filename,'rt')
+
 print("Reading Parsed File...")
-BC_list = pd.read_table(dictfile, header=None, index_col=False, usecols=[0,1])
+BC_list = pd.read_table(open_by_suffix(dictfile), header=None, index_col=False, usecols=[0,1])
 print("Setting up Dictionary...")
 BC_dict = dict(zip(BC_list[0], BC_list[1]))
 
 with open("%s/%s.match" % (current_path, out_id), "w") as match_oligo:
     with open("%s/%s.reject.fastq" % (current_path, out_id), "w") as reject_fastq:
-        with gzip.open(fastqfile, "rt") as handle:
+        with open_by_suffix(fastqfile, "rt") as handle:
             print("Reading Records...")
             for record in SeqIO.parse(handle, "fastq"):
                 seq_only = record.seq
