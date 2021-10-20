@@ -27,7 +27,7 @@ def open_by_suffix(filename):
         return filename
 
 print("Reading Parsed File...")
-BC_list = pd.read_table(open_by_suffix(dictfile), header=None, index_col=False, usecols=[0,1])
+BC_list = pd.read_table(dictfile, header=None, index_col=False, usecols=[0,1])
 print("Setting up Dictionary...")
 BC_dict = dict(zip(BC_list[0], BC_list[1]))
 
