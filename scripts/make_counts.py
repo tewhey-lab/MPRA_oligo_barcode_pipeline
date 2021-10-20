@@ -16,7 +16,7 @@ from Bio import SeqIO
 fastqfile = argv[1]
 dictfile = argv[2]
 out_id = argv[3]
-read_number = argv[4]
+read_number = int(argv[4])
 
 current_path = os.getcwd()
 
