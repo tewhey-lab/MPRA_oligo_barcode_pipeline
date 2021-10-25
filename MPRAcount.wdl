@@ -77,8 +77,8 @@ task prep_counts {
     python ${working_directory}/make_counts.py ${sample_fastq} ${parsed} ${sample_id} ${read_b_number}
     }
   runtime {
-    memory: ${count_mem}
-    cpu: ${count_cpu}
+    memory: count_mem
+    cpu: count_cpu
     }
   output {
     File out="${sample_id}.match"
