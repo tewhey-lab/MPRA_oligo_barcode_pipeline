@@ -122,7 +122,7 @@ task make_count_table {
   command <<<
     perl ${working_directory}/compile_bc.pl ${flags} ${list_inFile} ${id_out}.count > ${id_out}.log
     awk '{if(NR%7==1){sum=0;good=0}
-      if(NR%7==1){printf "%s\t",$3; printf "%s\t","OL45";}
+      if(NR%7==1){printf "%s\t",$3; printf "%s\t",${id_out};}
       if(NR%7==3){sum+=$3}
       if(NR%7==4){printf "%0.f\t", $2; printf "%0.f\t", $3;sum+=$3;good+=$3;}
       if(NR%7==5){sum+=$3}
