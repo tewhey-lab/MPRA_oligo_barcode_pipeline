@@ -17,7 +17,12 @@ my $enhancers = $ARGV[1];
 my $out = $ARGV[2];
 my $read = $ARGV[3];
 
-open (ENHANCERS, "$enhancers") or die("ERROR: can not read file ($enhancers): $!\n");
+if ($enhancers =~ /.gz$/) {
+open(ENHANCERS, “gunzip -c $enhancers |”) or die("ERROR: can not open pipe to file ($enhancers): $!\n");
+}
+else {
+open(ENHANCERS, "$enhancers") or die("ERROR: can not read file ($enhancers): $!\n");
+}
 open (OUT, ">$out") or die("ERROR: can not create $out: $!\n");
 
 my @inline;
@@ -44,20 +49,7 @@ while (<TAGS>){
 }
 close TAGS;
 
-my %approved_multiHit;
-my $id;
 
-while (<MULTIHIT>)
-        {
-        chomp;
-        @inline = split("\t");
-        foreach $id (@inline)
-                {
-                $approved_multiHit{$inline[0]}{$id}=1;
-                }
-        }
-
-				
 my $cur_tag;
 my $cur_loc;
 my $cur_flag;
