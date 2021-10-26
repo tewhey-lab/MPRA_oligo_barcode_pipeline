@@ -18,7 +18,7 @@ my $out = $ARGV[2];
 my $read = $ARGV[3];
 
 if ($enhancers =~ /.gz$/) {
-open(ENHANCERS, “gunzip -c $enhancers |”) or die("ERROR: can not open pipe to file ($enhancers): $!\n");
+open(ENHANCERS, "gunzip -c $enhancers |") or die("ERROR: can not open pipe to file ($enhancers): $!\n");
 }
 else {
 open(ENHANCERS, "$enhancers") or die("ERROR: can not read file ($enhancers): $!\n");
