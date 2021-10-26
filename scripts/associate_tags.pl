@@ -97,10 +97,6 @@ while (<ENHANCERS>){
 				@tmp_md = split(/,/,$cur_m_md);
 				@tmp_pos = split(/,/,$cur_m_pos);
 
-				foreach $p (@tmp_id)
-	              {
-	              $collision_ok=0 unless(exists($approved_multiHit{$tmp_id[0]}{$p}));
-	              }
 
 				if($collision_ok == 0){
 					${$tags{$cur_tag}}[1] = -4;
