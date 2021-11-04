@@ -45,10 +45,12 @@ for(celltype in unique(cell_reps$celltype)){
 	agg_count$means <- rowMeans(agg_count[,reps])
 	mean_bound <- as.numeric(quantile(agg_count$means, seq(0,1,0.01))[81])
 	tot_bound <- 0.8*max(agg_count$means, na.rm=T)
+	message(mean_bound)
+	message(tot_bound)
 	agg_ct_gt20 <- nrow(agg_count[which(agg_count$means > 20),])
 	total_oligos <- nrow(agg_count)
 
-	agg_rep_bcs[[celltype]] <- ggplot(agg_rep_bc, aes(x=Freq)) + geom_histogram(bins=200) + geom_vline(xintercept=10, col="red") + xlim(0,max(mean_bound,tot_bound)) + xlab("Barcodes per aggregated Oligo") + ggtitle(paste0("Aggregated Barcode Count\n",agg_gt10," Oligos with > 10 Barcodes")) + theme_light()
+	agg_rep_bcs[[celltype]] <- ggplot(agg_rep_bc, aes(x=Freq)) + geom_histogram(bins=200) + geom_vline(xintercept=10, col="red") + xlim(0,min(mean_bound,tot_bound)) + xlab("Barcodes per aggregated Oligo") + ggtitle(paste0("Aggregated Barcode Count\n",agg_gt10," Oligos with > 10 Barcodes")) + theme_light()
 	agg_rep_counts[[celltype]] <- ggplot(agg_count, aes(x=means)) + geom_histogram(bins=300) + geom_vline(xintercept=20, col="red") + xlab("Mean Count per  aggregated Oligo") + ggtitle(paste0("Mean Oligo Counts\n", agg_ct_gt20," Oligos with Mean Count > 20")) + theme_light()
 
 	for(rep in reps){
