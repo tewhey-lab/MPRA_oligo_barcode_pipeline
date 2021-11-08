@@ -89,7 +89,7 @@ while (<ENHANCERS>){
 			{
 			if($cur_flag == 1)
 				{
-				$collision_ok=1;
+				$collision_ok=0;
 				@tmp_id = split(/,/,$cur_loc);
 				@tmp_passflg = split(/,/,$cur_m_flag);
 				@tmp_aln = split(/,/,$cur_m_aln);
