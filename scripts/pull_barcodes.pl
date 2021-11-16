@@ -10,6 +10,8 @@ my $link_A_bc = $ARGV[3]; #Any length, we use 6 bases
 my $link_A_oligo = $ARGV[4]; #4 bases
 my $end_A_oligo = $ARGV[5]; #4 bases
 my $MIN_SEQ_SIZE = $ARGV[6];
+my $MIN_ENH_SIZE = $ARGV[7];
+my $MAX_ENH_SIZE = $ARGV[8];
 
 open (FASTA, "$fasta") or die("ERROR: can not read file ($fasta): $!\n");
 open (MATCH, ">$out".".match") or die("ERROR: can not create $out .matched: $!\n");
@@ -61,7 +63,7 @@ while (<FASTA>){
 # If the linker is not present then reject the sequence.
   if(index(substr($r1, 18, 10), $link_A_bc) == -1){
     if($id ne "+"){
-      print REJECT "$id\n";
+      print REJECT "$id\t Linker Sequence Not Found\n";
     }
   }
 
@@ -101,6 +103,11 @@ while (<FASTA>){
 
 # Print to match if it pulled an actual id
   if($id ne "+"){
-    print MATCH join("\t", $id, $barcode_seq, $oligo_seq, $oligo_length, length($r1)."\n");
+    if($oligo_length >= $MIN_ENH_SIZE & <= $MAX_ENH_SIZE){
+      print MATCH join("\t", $id, $barcode_seq, $oligo_seq, $oligo_length, length($r1)."\n");
+    }
+    else{
+      print REJECT join("\t", $id, "Oligo Outside Length Bounds", $barcode_seq, $oligo_length."\n");
+    }
   }
 }
