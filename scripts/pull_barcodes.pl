@@ -103,7 +103,7 @@ while (<FASTA>){
 
 # Print to match if it pulled an actual id
   if($id ne "+"){
-    if($oligo_length >= $MIN_ENH_SIZE & <= $MAX_ENH_SIZE){
+    if($oligo_length >= $MIN_ENH_SIZE && <= $MAX_ENH_SIZE){
       print MATCH join("\t", $id, $barcode_seq, $oligo_seq, $oligo_length, length($r1)."\n");
     }
     else{
