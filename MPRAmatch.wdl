@@ -7,6 +7,8 @@ workflow MPRAmatch {
   File reference_fasta #Oligo sequences with names (can be the oligo order sheet)
   Int read_b_number #2 if you followed the method above, otherwise 1
   Int seq_min #Minimum acceptable sequence length when separating the barcodes and oligos
+  Int enh_min #Minimum acceptable length for an oligo
+  Int enh_max #Maximum acceptable length for an oligo
   String working_directory #String of the directory relative to the WDL where the other required scripts live
   String out_directory #String of the directory that all files will be copied to
   String id_out #Project identifier - all files will have this as the prefix for their name
@@ -27,6 +29,8 @@ workflow MPRAmatch {
                           id_out=id_out,
                           barcode_link=barcode_link,
                           seq_min=seq_min,
+                          enh_min=enh_min,
+                          enh_max=enh_max,
                           oligo_link=oligo_link,
                           end_oligo_link=end_oligo_link
                         }
@@ -113,8 +117,10 @@ task Pull_Barcodes {
   String oligo_link
   String end_oligo_link
   Int seq_min
+  Int enh_min
+  Int enh_max
   command {
-    perl ${working_directory}/pull_barcodes.pl ${merged_fastq} ${read_number} ${id_out}.merged ${barcode_link} ${oligo_link} ${end_oligo_link} ${seq_min}
+    perl ${working_directory}/pull_barcodes.pl ${merged_fastq} ${read_number} ${id_out}.merged ${barcode_link} ${oligo_link} ${end_oligo_link} ${seq_min} ${enh_min} ${enh_max}
     }
   output {
     File out1="${id_out}.merged.match"
