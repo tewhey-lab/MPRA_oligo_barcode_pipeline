@@ -64,7 +64,7 @@ for(celltype in unique(cell_reps$celltype)){
 		message(rep)
 		indv_hist <- data.frame(table(dataCount$Oligo[which(dataCount[,rep] > 0)]))
 		indv_gt10 <- nrow(indv_hist[which(indv_hist$Freq>10),])
-		indv_rep_bcs[[celltype]][[rep]] <- ggplot(indv_hist, aes(x=Freq)) + geom_histogram(bins=200) + geom_vline(xintercept=10, col="red") + xlab("Barcodes per Oligo") + ggtitle(paste0("Barcode Count ", rep, "\n", indv_gt10, " Oligos with > 10 Barcodes)) + theme_light()
+		indv_rep_bcs[[celltype]][[rep]] <- ggplot(indv_hist, aes(x=Freq)) + geom_histogram(bins=200) + geom_vline(xintercept=10, col="red") + xlab("Barcodes per Oligo") + ggtitle(paste0("Barcode Count ", rep, "\n", indv_gt10, " Oligos with > 10 Barcodes")) + theme_light()
 		indv_agg <- aggregate(. ~Oligo, data=dataCount[,c("Oligo",rep)], FUN=sum)
 		colnames(indv_agg) <- c("Oligo","counts")
 		counts_bound <- as.numeric(quantile(indv_agg$counts, seq(0,1,0.01))[81])
