@@ -1,12 +1,16 @@
 {
-  "MPRAMatch.read_a": "File",
-  "MPRAMatch.read_b": "File",
-  "MPRAMatch.reference_fasta": "File",
-  "MPRAMatch.read_b_number": "Int",
-  "MPRAMatch.seq_min": "Int",
-  "MPRAMatch.working_directory": "String",
-  "MPRAMatch.id_out": "String",
-  "MPRAMatch.barcode_link": "String",
-  "MPRAMatch.oligo_link": "String",
-  "MPRAMatch.end_oligo_link": "String"
+  "MPRAmatch.read_a": "File",
+  "MPRAmatch.read_b": "File",
+  "MPRAmatch.reference_fasta": "File",
+  "MPRAmatch.read_b_number": "Int",
+  "MPRAmatch.read_len": "Int",
+  "MPRAmatch.seq_min": "Int",
+  "MPRAmatch.enh_min": "Int",
+  "MPRAmatch.enh_max": "Int",
+  "MPRAmatch.working_directory": "String",
+  "MPRAmatch.out_directory": "String",
+  "MPRAmatch.id_out": "String",
+  "MPRAmatch.barcode_link": "String",
+  "MPRAmatch.oligo_link": "String",
+  "MPRAmatch.end_oligo_link": "String"
 }

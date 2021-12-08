@@ -1,0 +1,55 @@
+bootstrap: docker
+from: ubuntu:21.10
+
+%environment
+    PATH="/usr/local/anaconda/bin:$PATH"
+    
+%post
+    # install debian packages
+    apt-get update
+    
+    # Fix Locale issues
+    apt-get install -y locales
+    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+    locale-gen
+    update-locale "LANG=en_US.UTF-8"
+    
+    apt-get install -y eatmydata
+    # Fix issue with tzdata interactive
+    DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata
+    eatmydata apt-get install -y wget bzip2 \
+        ca-certificates libglib2.0-0 libxext6 libsm6 libxrender1 \
+        git gnupg2 
+    
+    # Install R 3.6.
+    echo "deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/" >> /etc/apt/sources.list
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+    # apt-get update
+    apt-get install -y --no-install-recommends r-base
+    apt-get install -y --no-install-recommends r-base-dev
+    apt-get clean
+        
+    if [ ! -d /usr/local/anaconda ]; then 
+        wget https://repo.anaconda.com/miniconda/Miniconda3-py39_4.9.2-Linux-x86_64.sh \
+            -O ~/anaconda.sh && \
+            bash ~/anaconda.sh -b -p /usr/local/anaconda && \
+            rm ~/anaconda.sh
+    fi
+    
+    wget -q -O /tmp/libpng12.deb http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb \
+      && dpkg -i /tmp/libpng12.deb \
+      && rm /tmp/libpng12.deb
+    
+    export PATH="/usr/local/anaconda/bin:$PATH"
+
+	# Install packages via conda
+        conda config --add channels bioconda
+        conda install -c bioconda cromwell womtool flash2 minimap2=2.17 preseq pandas biopython
+    
+	# Install required R packages
+        Rscript -e 'install.packages("ggplot2")'
+        Rscript -e 'install.packages("reshape2")'
+        Rscript -e 'install.packages("gridExtra")'
+
+%runscript
+        /usr/local/anaconda/bin/mpra "$@"

@@ -6,6 +6,7 @@ workflow MPRAmatch {
   File read_b #R2 fastq
   File reference_fasta #Oligo sequences with names (can be the oligo order sheet)
   Int read_b_number #2 if you followed the method above, otherwise 1
+  Int read_len #Length of reads that are being flashed. If mixed lengths use max.
   Int seq_min #Minimum acceptable sequence length when separating the barcodes and oligos
   Int enh_min #Minimum acceptable length for an oligo
   Int enh_max #Maximum acceptable length for an oligo
@@ -19,6 +20,7 @@ workflow MPRAmatch {
   call Flash { input:
                   read_a=read_a,
                   read_b=read_b,
+                  read_len=read_len,
                   id_out=id_out
                 }
   call Pull_Barcodes { input:
@@ -99,9 +101,10 @@ task Flash {
   # Flashing raw fastq files together
   File read_a
   File read_b
+  Int read_len
   String id_out
   command {
-    flash2 -r 250 -f 274 -s 20 -o ${id_out}.merged -t 25 ${read_a} ${read_b}
+    flash2 -r ${read_len} -f 274 -s 20 -o ${id_out}.merged -t 25 ${read_a} ${read_b}
     }
   output {
     File out="${id_out}.merged.extendedFrags.fastq"

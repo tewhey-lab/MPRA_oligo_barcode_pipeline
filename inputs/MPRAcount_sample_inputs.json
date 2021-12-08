@@ -1,10 +1,11 @@
 {
   "MPRAcount.parsed": "File",
-  "MPRAcount.read_b_number": "2",
-  "MPRAcount.working_directory": "/projects/tewhey-lab/projects/UKBB/MPRA_oligo_barcode_pipeline/scripts",
+  "MPRAcount.acc_id": "File",
+  "MPRAcount.read_b_number": "Int",
+  "MPRAcount.working_directory": "String",
   "MPRAcount.out_directory":"String",
   "MPRAcount.id_out": "String",
-  "MPRAcount.flags": "-ECSM -A 0.05",
+  "MPRAcount.flags": "String",
   "MPRAcount.replicate_fastq": "Array[File]",
   "MPRAcount.replicate_id": "Array[String]"
 }

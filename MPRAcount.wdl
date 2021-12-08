@@ -9,8 +9,6 @@ workflow MPRAcount {
   File parsed #Output of MPRAMatch pipeline
   File acc_id
   Int read_b_number #2 if MPRAMatch was run with read_a as R1 and read_b as R2, otherwise it should be 1
-  Int count_cpu #Number of cpus needed for each part of the prep_counts function
-  Int count_mem #Amount of memory to be desginated to the prep_counts function
   String flags #-ECSM -A 0.05 (Error, Cigar, Start/Stop, MD, Error Cutoff)
   String id_out #Overall project id for the final count table
   String working_directory #directory relative to the WDL where the scripts live
@@ -23,8 +21,6 @@ workflow MPRAcount {
                           read_b_number=read_b_number,
                           parsed=parsed,
                           sample_id=replicate.right,
-                          count_mem=count_mem,
-                          count_cpu=count_cpu
                         }
     call associate { input:
                         working_directory=working_directory,
@@ -69,17 +65,11 @@ task prep_counts {
   File sample_fastq
   File parsed
   Int read_b_number
-  Int count_cpu
-  Int count_mem
   String working_directory
   String sample_id
 
   command {
     python ${working_directory}/make_counts.py ${sample_fastq} ${parsed} ${sample_id} ${read_b_number}
-    }
-  runtime {
-    memory: count_mem + "GB"
-    cpu: count_cpu
     }
   output {
     File out="${sample_id}.match"

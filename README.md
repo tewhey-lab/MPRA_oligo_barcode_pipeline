@@ -2,13 +2,17 @@
 ### Written in the Written Description Language (WDL) version 1.0 more info [here](https://github.com/openwdl/wdl)
 
 ## Before running the pipeline
+We have the whole environment containerized, the definition file is available in the `environment/` folder of this repository.
+
+If you are unable to run the pipeline via a container, then set up your environment as described below:
+
 * Have the latest version of Cromwell and Womtool in your workspace
   * `conda install -c bioconda cromwell`
   * `conda install -c bioconda womtool`
 
 * Have modules for FLASH2, minimap2 (version 2.17), preseq, pandas, reshape2, ggplot2, gridextra, and Biopython available
-  * `conda install -c bioconda  flash2 minimap2=2.17 preseq pandas biopython r-ggplot2`
-  * `conda install -c conda-forge r-reshape2`
+  * `conda install -c bioconda  flash2 minimap2=2.17 preseq pandas biopython`
+  * `conda install -c conda-forge r-reshape2 r-ggplot2`
   * `conda install -c r r-gridextra`
 
 * Make sure all the available scripts (except for the WDL itself) are in a known directory (you will need to provide the path to this directory)
@@ -18,12 +22,13 @@
 	- overall_project/
 		- specific_project/
 			- MPRAmatch_output/
-			-  MPRAcount_output/
-			- MPRAanalyze_output/
+			- MPRAcount_output/
+			- MPRAmodel_output/
 			- setup/ 	(copy from cloned repository)
 			- fastq/
 			- submission/
 		- cloned_repository/
+      - environment/
 			- graphics/
 			- inputs/
 			- scripts/
@@ -31,23 +36,57 @@
 			- MPRAcount.wdl
 			- MPRAmatch.wdl
 			- README.md
-
+```
 ## Running the WDL
-* Validate the file
-  `womtool validate <pipeline_name>.wdl`
 
-  **NB: use the version number for your version of Womtool downloaded above**
+  * Validate the file
+    `womtool validate <pipeline_name>.wdl`
 
-* Generate inputs file
-  `womtool inputs <pipeline_name>.wdl > <your_projects_name>_inputs.json`
+    **NB: use the version number for your version of Womtool downloaded above, but you should not need to validate the pipelines included here**
 
-  **NB: see the "Filling in the json" section below for detailed description of input needed**
+  * Generate inputs file
+    `womtool inputs <pipeline_name>.wdl > <your_projects_name>_inputs.json`
 
-* Run the pipeline with your inputs
-  `cromwell run <pipeline_name>.wdl --inputs <your_projects_name>_inputs.json`
+    **NB: see the "Filling in the json" section below for detailed description of input needed, scripts and sample inputs are provided in this repository to make this step easier**
+
+  * Run the pipeline with your inputs
+    `cromwell run <pipeline_name>.wdl --inputs <your_projects_name>_inputs.json`
 
 **To submit to slurm** Make sure that you give the pipeline enough memory to run, if the pipeline fails the first time you run it, look at the end of the slurm output file to determine whether you need to give it more time or more memory
-  * `sbatch -p compute -q batch -t 24:00:00 --mem=45GB -c 8 --wrap "cromwell run <pipeline_name>.wdl --inputs <your_projects_name>_inputs.json"`
+  * `sbatch -p compute -q batch -t 24:00:00 --mem=45GB -c 8 --wrap "cromwell run <pipeline_name>.wdl --inputs <your_projects_name>_inputs.json"` <br>
+
+  * **OR** you can use the runscript and submission template below which utilizes the singularity container: <br>
+  Runscript:
+  ```
+  echo "Running Cromwell"
+
+  cromwell run /path/to/cloned_repository/MPRAcount.wdl --inputs path/to/cloned_repository/inputs/MPRAcount/MPRAcount_<your_project>_inputs.json
+
+  echo "Finished Cromwell"
+  ```
+  Submission template:
+  ```
+  #!/bin/bash
+  #SBATCH --job-name= <your_projects_name>
+  #SBATCH -p compute # partition(this is the standard)
+  #SBATCH -q batch
+  #SBATCH -N 1 # number of nodes
+  #SBATCH -n 45 # number of cores
+  #SBATCH --mem 200GB # memory pool for all cores
+  #SBATCH -t 3-00:00 # time (D-HH:MM)
+  #SBATCH --mail-type=END,FAIL
+  #SBATCH --mail-user= <your_email_here>
+
+  echo "Loading Singularity Module"
+
+  module load singularity
+
+  echo "Executing SIF with Code"
+
+  singularity exec /path/to/your/built/container sh /path/to/runscript/MPRAcount_call.sh
+
+  echo "Done"
+  ```
 
 ## Filling in the json
 A generalized filled in example of each .json is below
@@ -59,7 +98,10 @@ _MPRAmatch.wdl_
        "MPRAmatch.read_b": "full/path/to/read/2.fastq.gz",
        "MPRAmatch.reference_fasta": "/full/path/to/reference/fasta.fa",
        "MPRAmatch.read_b_number": "2",
+       "MPRAmatch.read_len": "250",
        "MPRAmatch.seq_min": "100",
+       "MPRAmatch.enh_min": "50",
+       "MPRAmatch.enh_max": "210",
        "MPRAmatch.working_directory": "full/path/to/script/location",
        "MPRAmatch.out_directory": "full/path/to/output/directory/"
        "MPRAmatch.id_out": "Your_Project_ID",
@@ -73,6 +115,7 @@ _MPRAcount.wdl_
  ```
      {
        "MPRAcount.parsed": "full/path/to/MPRAmatch/output.merged.match.enh.mapped.barcode.ct.parsed",
+       "MPRAcount.acc_id": "File (tab separated file mapping accession numbers to replicates and associated cell type)",
        "MPRAcount.read_b_number": "2 (same as used for MPRAmatch)",
        "MPRAcount.working_directory": "full/path/to/script/location",
        "MPRAcount.out_directory": "full/path/to/output/directory/",
@@ -91,12 +134,13 @@ It is suggested to use `fill_<pipeline>_json.sh` scripts to help fill in the jso
 ## Outputs Needed at later steps
 It is suggested that you note the job id generated within cromwell for assistance finding these files at a later date.
 
-The output file from MPRAmatch needed as input for the MPRAcount pipeline can be found at:
+The output file from `MPRAmatch` needed as input for the `MPRAcount` pipeline can be found at:
   * Parsed File      : `/specified/output/directory/<id_out>.merged.match.enh.mapped.barcode.ct.parsed`
 
 The following files can then be input into the R pipeline [here](https://github.com/tewhey-lab/MPRA_tag_analysis) for analysis:
-  * Count File       : `cromwell-executions/MPRAcount/<job_id>/call-make_count_table/execution/<id_out>.count`
+  * Count File       : `/specified/output/directory/<id_out>.count`
   * Attributes Table : The output of `make_project_list.pl` and `make_attributes_oligo.pl`. If you want to bypass the use of `make_project_list.pl`, you can pass `make_attributes_oligo.pl` a tab delimited file with two columns, the first column should be the oligo names and the second column should be the project(s) that the associated oligo belongs to. If an oligo belongs to multiple projects they should be separated by commas.
+  * Condition file   : `/specified/output/directory/<id_out>_condition.txt`
 
 ## How the Pipelines work
 
