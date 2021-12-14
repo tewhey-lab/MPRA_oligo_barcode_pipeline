@@ -111,13 +111,12 @@ task make_count_table {
   String id_out
   command <<<
     perl ${working_directory}/compile_bc.pl ${flags} ${list_inFile} ${id_out}.count > ${id_out}.log
-    awk '{if(NR%7==1){sum=0;good=0}
-      if(NR%7==1){printf "%s\t",$3; printf "%s\t",${id_out};}
-      if(NR%7==3){sum+=$3}
-      if(NR%7==4){printf "%0.f\t", $2; printf "%0.f\t", $3;sum+=$3;good+=$3;}
-      if(NR%7==5){sum+=$3}
-      if(NR%7==6){sum+=$3}
-      if(NR%7==0){printf "%0.f\t", sum; printf "%.2f\n", good/(sum)*100;}
+    awk '{if(NR%6==1){sum=0;good=0}
+      if(NR%6==1){printf "%s\t",$3; printf "%s\t",${id_out};}
+      if(NR%6==3){printf "%0.f\t", $2; printf "%0.f\t", $3;sum+=$3;good+=$3;}
+      if(NR%6==4){sum+=$3}
+      if(NR%6==5){sum+=$3}
+      if(NR%6==0){printf "%0.f\t", sum; printf "%.2f\n", good/(sum)*100;}
       }' ${id_out}.log > ${id_out}.stats
     >>>
   output {
