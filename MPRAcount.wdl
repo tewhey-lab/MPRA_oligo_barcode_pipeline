@@ -49,6 +49,13 @@ workflow MPRAcount {
                     id_out = id_out,
                     acc_id = acc_id
                 }
+  call countRaw { input:
+                    count_out = make_count_table.count,
+                    cond_out = count_QC.out,
+                    id_out = id_out,
+                    out_directory = out_directory,
+                    working_directory = working_directory
+                }
   call relocate { input:
                     matched = prep_counts.out,
                     tag_files = associate.outF,
@@ -136,6 +143,16 @@ task count_QC {
     }
   output {
     File out="${id_out}_condition.txt"
+    }
+  }
+task countRaw {
+  File count_out
+  File cond_out
+  String id_out
+  String out_directory
+  String working_directory
+  command {
+    Rscript ${working_directory}/bc_raw.R ${cond_out} ${count_out} ${id_out} ${out_directory}
     }
   }
 task relocate {
