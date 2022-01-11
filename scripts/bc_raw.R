@@ -8,6 +8,15 @@ count.table <- args[2] ## Barcode level count table from MPRAcount pipeline
 id_out <- args[3]
 floc <- args[4]
 
+conditionStandard <- function(conditionData){
+  cond_data <- as.data.frame(conditionData)
+  colnames(cond_data)[1] <- "condition"
+  cond_data[,1] <- factor(cond_data[,1])
+  cond_data$condition <- relevel(cond_data$condition, "DNA")
+
+  return(cond_data)
+}
+
 bcRawOut <- function(countsData, conditionData, file_prefix, floc){
   conditionData <- conditionStandard(conditionData)
   for(celltype in levels(conditionData$condition)){
