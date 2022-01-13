@@ -64,7 +64,7 @@ If you are unable to run the pipeline via a container, then set up your environm
 
   echo "Finished Cromwell"
   ```
-  Submission template:
+  Submission template (for a SLURM based scheduler):
   ```
   #!/bin/bash
   #SBATCH --job-name= <your_projects_name>
