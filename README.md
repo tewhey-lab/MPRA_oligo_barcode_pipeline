@@ -97,7 +97,7 @@ _MPRAmatch.wdl_
        "MPRAmatch.seq_min": "100",
        "MPRAmatch.enh_min": "50",
        "MPRAmatch.enh_max": "210",
-       "MPRAmatch.working_directory": "full/path/to/script/location",
+       "MPRAmatch.working_directory": "full/path/to/MPRA_oligo_barcode_pipeline/scripts",
        "MPRAmatch.out_directory": "full/path/to/output/directory/"
        "MPRAmatch.id_out": "Your_Project_ID",
        "MPRAmatch.barcode_link": "6 bases at the barcode end of the sequence linking the barcode and oligo",
@@ -112,7 +112,7 @@ _MPRAcount.wdl_
        "MPRAcount.parsed": "full/path/to/MPRAmatch/output.merged.match.enh.mapped.barcode.ct.parsed",
        "MPRAcount.acc_id": "File (tab separated file mapping accession numbers to replicates and associated cell type)",
        "MPRAcount.read_b_number": "2 (same as used for MPRAmatch)",
-       "MPRAcount.working_directory": "full/path/to/script/location",
+       "MPRAcount.working_directory": "full/path/to/MPRA_oligo_barcode_pipeline/scripts",
        "MPRAcount.out_directory": "full/path/to/output/directory/",
        "MPRAcount.id_out": "Your_Project_ID",
        "MPRAcount.flags": "-ECSM -A 0.05 (suggested)",
