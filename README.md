@@ -89,16 +89,16 @@ A generalized filled in example of each .json is below
 _MPRAmatch.wdl_
  ```
      {
-       "MPRAmatch.read_a": "full/path/to/read/1.fastq.gz",
-       "MPRAmatch.read_b": "full/path/to/read/2.fastq.gz",
+       "MPRAmatch.read_a": "/full/path/to/read/1.fastq.gz",
+       "MPRAmatch.read_b": "/full/path/to/read/2.fastq.gz",
        "MPRAmatch.reference_fasta": "/full/path/to/reference/fasta.fa",
        "MPRAmatch.read_b_number": "2",
        "MPRAmatch.read_len": "250",
        "MPRAmatch.seq_min": "100",
        "MPRAmatch.enh_min": "50",
        "MPRAmatch.enh_max": "210",
-       "MPRAmatch.working_directory": "full/path/to/MPRA_oligo_barcode_pipeline/scripts",
-       "MPRAmatch.out_directory": "full/path/to/output/directory/"
+       "MPRAmatch.working_directory": "/full/path/to/MPRA_oligo_barcode_pipeline/scripts",
+       "MPRAmatch.out_directory": "/full/path/to/output/directory/"
        "MPRAmatch.id_out": "Your_Project_ID",
        "MPRAmatch.barcode_link": "6 bases at the barcode end of the sequence linking the barcode and oligo",
        "MPRAmatch.oligo_link": "4 bases at the oligo end of the sequence linking the barcode and oligo",
@@ -109,14 +109,14 @@ _MPRAmatch.wdl_
 _MPRAcount.wdl_
  ```
      {
-       "MPRAcount.parsed": "full/path/to/MPRAmatch/output.merged.match.enh.mapped.barcode.ct.parsed",
+       "MPRAcount.parsed": "/full/path/to/MPRAmatch/output.merged.match.enh.mapped.barcode.ct.parsed",
        "MPRAcount.acc_id": "File (tab separated file mapping accession numbers to replicates and associated cell type)",
        "MPRAcount.read_b_number": "2 (same as used for MPRAmatch)",
-       "MPRAcount.working_directory": "full/path/to/MPRA_oligo_barcode_pipeline/scripts",
-       "MPRAcount.out_directory": "full/path/to/output/directory/",
+       "MPRAcount.working_directory": "/full/path/to/MPRA_oligo_barcode_pipeline/scripts",
+       "MPRAcount.out_directory": "/full/path/to/output/directory/",
        "MPRAcount.id_out": "Your_Project_ID",
        "MPRAcount.flags": "-ECSM -A 0.05 (suggested)",
-       "MPRAcount.replicate_fastq": ["full/path/to/celltype1/rep1.fastq.gz", "full/path/to/celltype1/rep2.fastq.gz", "full/path/to/celltype1/rep3.fastq.gz", "full/path/to/celltype2/rep1.fastq.gz",...],
+       "MPRAcount.replicate_fastq": ["/full/path/to/celltype1/rep1.fastq.gz", "/full/path/to/celltype1/rep2.fastq.gz", "/full/path/to/celltype1/rep3.fastq.gz", "/full/path/to/celltype2/rep1.fastq.gz",...],
        "MPRAcount.replicate_id": ["Celltype1_r1", "Celltype1_r2", "Celltype1_r3", "Celltype2_r1", ...]
 
      }
