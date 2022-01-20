@@ -5,7 +5,10 @@ workflow MPRAmatch {
   File read_a #R1 fastq
   File read_b #R2 fastq
   File reference_fasta #Oligo sequences with names (can be the oligo order sheet)
-  Int read_b_number #2 if you followed the method above, otherwise 1
+  Int? barcode_orientation = 2 #2 if you followed the method above, otherwise 1. Default to 2
+  Int? flash_thread = 25 #Number of threads to be passed to FLASH2. Default to 25
+  Int? map_thread = 30 #Number of threads to be passed to MiniMap2. Default to 30
+  Int? sort_mem = 30 #Memory to be passed to the sort function. Default to 30G
   Int read_len #Length of reads that are being flashed. If mixed lengths use max.
   Int seq_min #Minimum acceptable sequence length when separating the barcodes and oligos
   Int enh_min #Minimum acceptable length for an oligo
@@ -20,6 +23,7 @@ workflow MPRAmatch {
   call Flash { input:
                   read_a=read_a,
                   read_b=read_b,
+                  flash_thread=flash_thread,
                   read_len=read_len,
                   id_out=id_out
                 }
@@ -27,7 +31,7 @@ workflow MPRAmatch {
                           #pull = pull,
                           working_directory=working_directory,
                           merged_fastq=Flash.out,
-                          read_number=read_b_number,
+                          read_number=barcode_orientation,
                           id_out=id_out,
                           barcode_link=barcode_link,
                           seq_min=seq_min,
@@ -43,6 +47,7 @@ workflow MPRAmatch {
   call MiniMap { input:
                     reference_fasta=reference_fasta,
                     organized_fasta=Rearrange.out,
+                    map_thread=map_thread,
                     id_out=id_out
                   }
   call SAM2MPRA { input:
@@ -53,6 +58,7 @@ workflow MPRAmatch {
                     }
   call Sort { input:
                   MPRA_out=SAM2MPRA.out,
+                  sort_mem=sort_mem,
                   id_out=id_out
                 }
   call Ct_Seq { input:
@@ -102,9 +108,10 @@ task Flash {
   File read_a
   File read_b
   Int read_len
+  Int flash_thread
   String id_out
   command {
-    flash2 -r ${read_len} -f 274 -s 20 -o ${id_out}.merged -t 25 ${read_a} ${read_b}
+    flash2 -r ${read_len} -f 274 -s ${flash_thread} -o ${id_out}.merged -t 25 ${read_a} ${read_b}
     }
   output {
     File out="${id_out}.merged.extendedFrags.fastq"
@@ -145,9 +152,10 @@ task MiniMap {
   # Map the oligos to the reference to get the oligo names
   File reference_fasta
   File organized_fasta
+  Int map_thread
   String id_out
   command {
-    minimap2 --for-only -Y --secondary=no -m 10 -n 1 -t 30 --end-bonus 12 -O 5 -E 1 -k 10 -2K50m --MD --eqx --cs=long -c -a ${reference_fasta} ${organized_fasta} > ${id_out}.merged.match.enh.sam 2> ${id_out}.merged.match.enh.log
+    minimap2 --for-only -Y --secondary=no -m 10 -n 1 -t ${map_thread} --end-bonus 12 -O 5 -E 1 -k 10 -2K50m --MD --eqx --cs=long -c -a ${reference_fasta} ${organized_fasta} > ${id_out}.merged.match.enh.sam 2> ${id_out}.merged.match.enh.log
     }
   output {
     File out1="${id_out}.merged.match.enh.sam"
@@ -168,9 +176,10 @@ task SAM2MPRA {
   }
 task Sort {
   File MPRA_out
+  Int sort_mem
   String id_out
   command {
-    sort -S30G -k2 ${MPRA_out} > ${id_out}.merged.match.enh.mapped.barcode.sort
+    sort -S${sort_mem}G -k2 ${MPRA_out} > ${id_out}.merged.match.enh.mapped.barcode.sort
     }
   output {
     File out="${id_out}.merged.match.enh.mapped.barcode.sort"

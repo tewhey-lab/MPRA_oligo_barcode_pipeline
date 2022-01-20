@@ -92,7 +92,7 @@ _MPRAmatch.wdl_
        "MPRAmatch.read_a": "/full/path/to/read/1.fastq.gz",
        "MPRAmatch.read_b": "/full/path/to/read/2.fastq.gz",
        "MPRAmatch.reference_fasta": "/full/path/to/reference/fasta.fa",
-       "MPRAmatch.read_b_number": "2",
+       "MPRAmatch.barcode_orientation": "2",
        "MPRAmatch.read_len": "250",
        "MPRAmatch.seq_min": "100",
        "MPRAmatch.enh_min": "50",
@@ -111,7 +111,7 @@ _MPRAcount.wdl_
      {
        "MPRAcount.parsed": "/full/path/to/MPRAmatch/output.merged.match.enh.mapped.barcode.ct.parsed",
        "MPRAcount.acc_id": "File (tab separated file mapping accession numbers to replicates and associated cell type)",
-       "MPRAcount.read_b_number": "2 (same as used for MPRAmatch)",
+       "MPRAcount.barcode_orientation": "2 (same as used for MPRAmatch)",
        "MPRAcount.working_directory": "/full/path/to/MPRA_oligo_barcode_pipeline/scripts",
        "MPRAcount.out_directory": "/full/path/to/output/directory/",
        "MPRAcount.id_out": "Your_Project_ID",
