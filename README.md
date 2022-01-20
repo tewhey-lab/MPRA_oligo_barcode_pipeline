@@ -92,11 +92,10 @@ _MPRAmatch.wdl_
        "MPRAmatch.read_a": "/full/path/to/read/1.fastq.gz",
        "MPRAmatch.read_b": "/full/path/to/read/2.fastq.gz",
        "MPRAmatch.reference_fasta": "/full/path/to/reference/fasta.fa",
-       "MPRAmatch.barcode_orientation": "2",
-       "MPRAmatch.read_len": "250",
-       "MPRAmatch.seq_min": "100",
-       "MPRAmatch.enh_min": "50",
-       "MPRAmatch.enh_max": "210",
+       "MPRAmatch.read_len": "Maximum read length for FLASH2",
+       "MPRAmatch.seq_min": "Minimum sequence length to pull for barcode",
+       "MPRAmatch.enh_min": "Minimum enhancer length to pull",
+       "MPRAmatch.enh_max": "Maximum enhancer length to pull",
        "MPRAmatch.working_directory": "/full/path/to/MPRA_oligo_barcode_pipeline/scripts",
        "MPRAmatch.out_directory": "/full/path/to/output/directory/"
        "MPRAmatch.id_out": "Your_Project_ID",
@@ -111,11 +110,9 @@ _MPRAcount.wdl_
      {
        "MPRAcount.parsed": "/full/path/to/MPRAmatch/output.merged.match.enh.mapped.barcode.ct.parsed",
        "MPRAcount.acc_id": "File (tab separated file mapping accession numbers to replicates and associated cell type)",
-       "MPRAcount.barcode_orientation": "2 (same as used for MPRAmatch)",
        "MPRAcount.working_directory": "/full/path/to/MPRA_oligo_barcode_pipeline/scripts",
        "MPRAcount.out_directory": "/full/path/to/output/directory/",
        "MPRAcount.id_out": "Your_Project_ID",
-       "MPRAcount.flags": "-ECSM -A 0.05 (suggested)",
        "MPRAcount.replicate_fastq": ["/full/path/to/celltype1/rep1.fastq.gz", "/full/path/to/celltype1/rep2.fastq.gz", "/full/path/to/celltype1/rep3.fastq.gz", "/full/path/to/celltype2/rep1.fastq.gz",...],
        "MPRAcount.replicate_id": ["Celltype1_r1", "Celltype1_r2", "Celltype1_r3", "Celltype2_r1", ...]
 
@@ -123,6 +120,14 @@ _MPRAcount.wdl_
  ```
 
 **NB: For the replicate fastq files, a single fastq.gz file is required for each replicate, if there are more than one they should be concatenated together. This can be done quickly using the `merge_*.sh` files in the `setup` folder**
+
+There are several optional inputs designed to make use easier.
+ - `MPRAmatch.barcode_orientation` / `MPRAcount.barcode_orientation` : Integer, default to 2. Pulls barcode 5' to 3' end. If set to 1 barcode will be pulled in 3' to 5' orientation.
+ - `MPRAmatch.flash_thread` : Integer, default to 25. Number of threads to be passed to FLASH2 for merging reads.
+ - `MPRAmatch.map_thread` : Integer, default to 30. Number of threads to be passed to Minimap2 for mapping reads.
+ - `MPRAmatch.sort_mem` : Integer, default to 30. Amount of memory (in GB) to be used when sorting.
+ - `MPRAcount.flags` : String, default to -ECSM -A 0.05 Any combination of these flags or none can be used.
+
 
 It is suggested to use `fill_<pipeline>_json.sh` scripts to help fill in the jsons above instead of trying to fill them out manually.
 
