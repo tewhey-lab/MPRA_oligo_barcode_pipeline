@@ -1,0 +1,11 @@
+{
+  "MPRAcount.parsed": "File",
+  "MPRAcount.acc_id": "File",
+  "MPRAcount.barcode_orientation": "Int?",
+  "MPRAcount.working_directory": "String",
+  "MPRAcount.out_directory":"String",
+  "MPRAcount.id_out": "String",
+  "MPRAcount.flags": "String?",
+  "MPRAcount.replicate_fastq": "Array[File]",
+  "MPRAcount.replicate_id": "Array[String]"
+}

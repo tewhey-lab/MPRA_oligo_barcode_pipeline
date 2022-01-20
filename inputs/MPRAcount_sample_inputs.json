@@ -1,11 +1,9 @@
 {
-  "MPRAcount.parsed": "File",
-  "MPRAcount.acc_id": "File",
-  "MPRAcount.barcode_orientation": "Int?",
-  "MPRAcount.working_directory": "String",
-  "MPRAcount.out_directory":"String",
-  "MPRAcount.id_out": "String",
-  "MPRAcount.flags": "String?",
-  "MPRAcount.replicate_fastq": "Array[File]",
-  "MPRAcount.replicate_id": "Array[String]"
+  "MPRAcount.parsed": "/full/path/to/parsed/output/of/MPRAmatch",
+  "MPRAcount.acc_id": "/full/path/to/tab/separated/file",
+  "MPRAcount.working_directory": "/full/path/to/script/directory",
+  "MPRAcount.out_directory":"/full/path/to/output/directory",
+  "MPRAcount.id_out": "overall project ID",
+  "MPRAcount.replicate_fastq": ["/path/to/rep/1.fastq.gz","/path/to/rep/2.fastq.gz",...],
+  "MPRAcount.replicate_id": ["rep1","rep2",...]
 }
