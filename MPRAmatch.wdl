@@ -6,13 +6,12 @@ workflow MPRAmatch {
   File read_b #R2 fastq
   File reference_fasta #Oligo sequences with names (can be the oligo order sheet)
   Int? barcode_orientation = 2 #2 if you followed the method above, otherwise 1. Default to 2
-  Int? flash_thread = 25 #Number of threads to be passed to FLASH2. Default to 25
-  Int? map_thread = 30 #Number of threads to be passed to MiniMap2. Default to 30
-  Int? sort_mem = 30 #Memory to be passed to the sort function. Default to 30G
-  Int read_len #Length of reads that are being flashed. If mixed lengths use max.
-  Int seq_min #Minimum acceptable sequence length when separating the barcodes and oligos
-  Int enh_min #Minimum acceptable length for an oligo
-  Int enh_max #Maximum acceptable length for an oligo
+  Int? thread = 30 #Number of threads to be passed to FLASH2 and MiniMap2. Default to 25
+  Int? mem = 30 #Memory to be passed to the sort function. Default to 30G
+  Int? read_len = 250 #Length of reads that are being flashed. If mixed lengths use max.
+  Int? seq_min = 100 #Minimum acceptable sequence length when separating the barcodes and oligos
+  Int? enh_min = 50 #Minimum acceptable length for an oligo
+  Int? enh_max = 210 #Maximum acceptable length for an oligo
   String working_directory #String of the directory relative to the WDL where the other required scripts live
   String out_directory #String of the directory that all files will be copied to
   String id_out #Project identifier - all files will have this as the prefix for their name
@@ -23,7 +22,7 @@ workflow MPRAmatch {
   call Flash { input:
                   read_a=read_a,
                   read_b=read_b,
-                  flash_thread=flash_thread,
+                  flash_thread=thread,
                   read_len=read_len,
                   id_out=id_out
                 }
@@ -47,7 +46,7 @@ workflow MPRAmatch {
   call MiniMap { input:
                     reference_fasta=reference_fasta,
                     organized_fasta=Rearrange.out,
-                    map_thread=map_thread,
+                    map_thread=thread,
                     id_out=id_out
                   }
   call SAM2MPRA { input:
@@ -58,7 +57,7 @@ workflow MPRAmatch {
                     }
   call Sort { input:
                   MPRA_out=SAM2MPRA.out,
-                  sort_mem=sort_mem,
+                  sort_mem=mem,
                   id_out=id_out
                 }
   call Ct_Seq { input:
