@@ -16,7 +16,7 @@ CMD=`awk -v i="$i" '$2==i {aggr=aggr " " $1".fastq.gz"} END {print aggr}' acc_id
 
 echo $CMD
 
-cat $CMD > $i.fastq.gz
+cat $CMD > ../fastq/$i.fastq.gz
 
 
 done
