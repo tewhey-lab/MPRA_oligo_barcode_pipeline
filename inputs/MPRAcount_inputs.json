@@ -2,6 +2,7 @@
   "MPRAcount.parsed": "File",
   "MPRAcount.acc_id": "File",
   "MPRAcount.barcode_orientation": "Int?",
+  "MPRAcount.bc_len": "Int?",
   "MPRAcount.working_directory": "String",
   "MPRAcount.out_directory":"String",
   "MPRAcount.id_out": "String",
