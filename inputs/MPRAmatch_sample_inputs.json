@@ -2,14 +2,7 @@
   "MPRAmatch.read_a": "/full/path/to/read/1.fastq.gz",
   "MPRAmatch.read_b": "/full/path/to/read/2.fastq.gz",
   "MPRAmatch.reference_fasta": "/full/path/to/reference/.fasta",
-  "MPRAmatch.read_len": "<maximum_read_length>",
-  "MPRAmatch.seq_min": "<minimum_sequence_legth>",
-  "MPRAmatch.enh_min": "<minimum_enhancer_length>",
-  "MPRAmatch.enh_max": "<maximum_enhancer_length>",
   "MPRAmatch.working_directory": "/full/path/to/script/directory",
   "MPRAmatch.out_directory": "/full/path/to/output/directory",
-  "MPRAmatch.id_out": "overall project ID",
-  "MPRAmatch.barcode_link": "TCTAGA",
-  "MPRAmatch.oligo_link": "AGTG",
-  "MPRAmatch.end_oligo_link": "CGTC"
+  "MPRAmatch.id_out": "overall project ID"
 }

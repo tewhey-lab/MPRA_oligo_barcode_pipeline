@@ -6,18 +6,19 @@ workflow MPRAmatch {
   File read_b #R2 fastq
   File reference_fasta #Oligo sequences with names (can be the oligo order sheet)
   Int? barcode_orientation = 2 #2 if you followed the method above, otherwise 1. Default to 2
-  Int? thread = 30 #Number of threads to be passed to FLASH2 and MiniMap2. Default to 25
+  Int? thread = 30 #Number of threads to be passed to FLASH2 and MiniMap2. Default to 30
   Int? mem = 30 #Memory to be passed to the sort function. Default to 30G
   Int? read_len = 250 #Length of reads that are being flashed. If mixed lengths use max.
   Int? seq_min = 100 #Minimum acceptable sequence length when separating the barcodes and oligos
   Int? enh_min = 50 #Minimum acceptable length for an oligo
   Int? enh_max = 210 #Maximum acceptable length for an oligo
+  Int? bc_len = 20 #Length of barcodes used for project
   String working_directory #String of the directory relative to the WDL where the other required scripts live
   String out_directory #String of the directory that all files will be copied to
   String id_out #Project identifier - all files will have this as the prefix for their name
-  String barcode_link #6 base sequence on the barcode end of the link between the barcode and oligo - orientation barcode to oligo
-  String oligo_link #4 base sequence on the oligo end of the link between the barcode and oligo - orientation barcode to oligo
-  String end_oligo_link #4 base sequence at the very end of the oligo
+  String? barcode_link = "TCTAGA" #6 base sequence on the barcode end of the link between the barcode and oligo - orientation barcode to oligo
+  String? oligo_link = "AGTG" #4 base sequence on the oligo end of the link between the barcode and oligo - orientation barcode to oligo
+  String? end_oligo_link = "CGTC" #4 base sequence at the very end of the oligo
 
   call Flash { input:
                   read_a=read_a,
@@ -36,6 +37,7 @@ workflow MPRAmatch {
                           seq_min=seq_min,
                           enh_min=enh_min,
                           enh_max=enh_max,
+                          bc_len=bc_len,
                           oligo_link=oligo_link,
                           end_oligo_link=end_oligo_link
                         }
@@ -128,8 +130,9 @@ task Pull_Barcodes {
   Int seq_min
   Int enh_min
   Int enh_max
+  Int bc_len
   command {
-    perl ${working_directory}/pull_barcodes.pl ${merged_fastq} ${read_number} ${id_out}.merged ${barcode_link} ${oligo_link} ${end_oligo_link} ${seq_min} ${enh_min} ${enh_max}
+    perl ${working_directory}/pull_barcodes.pl ${merged_fastq} ${read_number} ${id_out}.merged ${barcode_link} ${oligo_link} ${end_oligo_link} ${seq_min} ${enh_min} ${enh_max} ${bc_len}
     }
   output {
     File out1="${id_out}.merged.match"

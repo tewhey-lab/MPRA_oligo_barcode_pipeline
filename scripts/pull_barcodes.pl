@@ -12,6 +12,7 @@ my $end_A_oligo = $ARGV[5]; #4 bases
 my $MIN_SEQ_SIZE = $ARGV[6];
 my $MIN_ENH_SIZE = $ARGV[7];
 my $MAX_ENH_SIZE = $ARGV[8];
+my $bc_len = $ARGV[9];
 
 open (FASTA, "$fasta") or die("ERROR: can not read file ($fasta): $!\n");
 open (MATCH, ">$out".".match") or die("ERROR: can not create $out .matched: $!\n");
@@ -25,7 +26,7 @@ my $id;
 my $r1;
 my $revcomp;
 my $revcomp_barcode;
-my $link_index=20;
+my $link_index=$bc_len;
 my $oligo_start;
 my $oligo_end;
 my $oligo_length;
@@ -56,26 +57,26 @@ while (<FASTA>){
   }
 # Check for the barcode linker start 18 bases in and look in the next 10 bases for the linking sequence.
 # This accounts for possible deletions or insertions.
-  if(index(substr($r1, 18, 10), $link_A_bc) != -1){
-    $link_index = index(substr($r1, 18, 10), $link_A_bc);
-    $link_index += 18;
+  if(index(substr($r1, $bc_len-2, 10), $link_A_bc) != -1){
+    $link_index = index(substr($r1, $bc_len-2, 10), $link_A_bc);
+    $link_index += $bc_len-2;
   }
 # If the linker is not present then reject the sequence.
-  if(index(substr($r1, 18, 10), $link_A_bc) == -1){
+  if(index(substr($r1, $bc_len-2, 10), $link_A_bc) == -1){
     if($id ne "+"){
       print REJECT "$id\t Linker Sequence Not Found\n";
     }
   }
 
 # If the linker is found at position 18, 19, or 20 set the start of the barcode as the start of the sequence
-  if($link_index - 20 <= 0){
+  if($link_index - $bc_len <= 0){
     $barcode_start = 0;
-    $barcode_seq = substr($r1, $barcode_start, 20);
+    $barcode_seq = substr($r1, $barcode_start, $bc_len);
   }
 # If the linker is found at position 21 or 22 then subtract 20 so that the barcode is the 20 bases immediately before the linker
-  if($link_index - 20 > 0){
-    $barcode_start = $link_index - 20;
-    $barcode_seq = substr($r1, $barcode_start, 20);
+  if($link_index - $bc_len > 0){
+    $barcode_start = $link_index - $bc_len;
+    $barcode_seq = substr($r1, $barcode_start, $bc_len);
   }
 
 # Look for the oligo end of the linker sequence starting 30 bases from where the barcode linker was found and look at the next 12 bases

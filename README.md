@@ -92,17 +92,9 @@ _MPRAmatch.wdl_
        "MPRAmatch.read_a": "/full/path/to/read/1.fastq.gz",
        "MPRAmatch.read_b": "/full/path/to/read/2.fastq.gz",
        "MPRAmatch.reference_fasta": "/full/path/to/reference/fasta.fa",
-       "MPRAmatch.read_len": "Maximum read length for FLASH2",
-       "MPRAmatch.seq_min": "Minimum sequence length to pull for barcode",
-       "MPRAmatch.enh_min": "Minimum enhancer length to pull",
-       "MPRAmatch.enh_max": "Maximum enhancer length to pull",
        "MPRAmatch.working_directory": "/full/path/to/MPRA_oligo_barcode_pipeline/scripts",
        "MPRAmatch.out_directory": "/full/path/to/output/directory/"
-       "MPRAmatch.id_out": "Your_Project_ID",
-       "MPRAmatch.barcode_link": "6 bases at the barcode end of the sequence linking the barcode and oligo",
-       "MPRAmatch.oligo_link": "4 bases at the oligo end of the sequence linking the barcode and oligo",
-       "MPRAmatch.end_oligo_link": "4 bases indicating the oligo is no longer being sequenced"
-
+       "MPRAmatch.id_out": "Your_Project_ID"
      }
  ```
 _MPRAcount.wdl_
@@ -123,11 +115,17 @@ _MPRAcount.wdl_
 
 There are several optional inputs designed to make use easier.
  - `MPRAmatch.barcode_orientation` / `MPRAcount.barcode_orientation` : Integer, default to 2. Pulls barcode 5' to 3' end. If set to 1 barcode will be pulled in 3' to 5' orientation.
- - `MPRAmatch.flash_thread` : Integer, default to 25. Number of threads to be passed to FLASH2 for merging reads.
- - `MPRAmatch.map_thread` : Integer, default to 30. Number of threads to be passed to Minimap2 for mapping reads.
- - `MPRAmatch.sort_mem` : Integer, default to 30. Amount of memory (in GB) to be used when sorting.
+ - `MPRAmatch.thread` : Integer, default to 30. Number of threads to be passed to FLASH2 and MiniMap2. Each gets this number of threads.
+ - `MPRAmatch.mem` : Integer, default to 30. Amount of memory (in GB) to be used when sorting.
+ - `MPRAmatch.read_len` : Integer, default to 250. Maximum length (in bp) of reads to be flashed
+ - `MPRAmatch.seq_min` : Integer, default to 100. Minimum sequence length to pull for barcode
+ - `MPRAmatch.enh_min` : Integer, default to 50. Minimum enhancer length to pull
+ - `MPRAmatch.enh_max` : Integer, default to 210. Maximum enhancer length to pull
  - `MPRAcount.bc_len` : Integer, default to 20. Length of barcodes to be pulled from replicate files
- - `MPRAcount.flags` : String, default to -ECSM -A 0.05 Any combination of these flags or none can be used.
+ - `MPRAcount.flags` : String, default to "-ECSM -A 0.05" Any combination of these flags or none can be used.
+ - `MPRAmatch.barcode_link` : String, default to "TCTAGA". 6 bases at the barcode end of the sequence linking the barcode and oligo
+ - `MPRAmatch.oligo_link` : String, default to "AGTG". 4 bases at the oligo end of the sequence linking the barcode and oligo
+ - `MPRAmatch.end_oligo_link` : String, default to "CGTC". 4 bases indicating the oligo is no longer being sequenced
 
 
 It is suggested to use `fill_<pipeline>_json.sh` scripts to help fill in the jsons above instead of trying to fill them out manually.

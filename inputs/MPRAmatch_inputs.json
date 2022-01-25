@@ -9,10 +9,11 @@
   "MPRAmatch.seq_min": "Int?",
   "MPRAmatch.enh_min": "Int?",
   "MPRAmatch.enh_max": "Int?",
+  "MPRAmatch.bc_len": "Int?",
   "MPRAmatch.working_directory": "String",
   "MPRAmatch.out_directory": "String",
   "MPRAmatch.id_out": "String",
-  "MPRAmatch.barcode_link": "String",
-  "MPRAmatch.oligo_link": "String",
-  "MPRAmatch.end_oligo_link": "String"
+  "MPRAmatch.barcode_link": "String?",
+  "MPRAmatch.oligo_link": "String?",
+  "MPRAmatch.end_oligo_link": "String?"
 }
