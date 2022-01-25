@@ -8,7 +8,8 @@ workflow MPRAcount {
   Array[Pair[File,String]] fastq_id = zip(replicate_fastq, replicate_id) #Pairing the fastq file to the id
   File parsed #Output of MPRAMatch pipeline
   File acc_id
-  Int? barcode_orientation= 2 #2 if MPRAMatch was run with read_a as R1 and read_b as R2, otherwise it should be 1
+  Int? barcode_orientation = 2 #2 if MPRAMatch was run with read_a as R1 and read_b as R2, otherwise it should be 1
+  Int? bc_len = 20 #If this is not changed a barcode of length 20 will be defaulted.
   String? flags = "-ECSM -A 0.05" #(Error, Cigar, Start/Stop, MD, Error Cutoff)
   String id_out #Overall project id for the final count table
   String working_directory #directory relative to the WDL where the scripts live
@@ -19,6 +20,7 @@ workflow MPRAcount {
                           working_directory=working_directory,
                           sample_fastq=replicate.left,
                           barcode_orientation=barcode_orientation,
+                          bc_len=bc_len,
                           parsed=parsed,
                           sample_id=replicate.right,
                         }
@@ -72,11 +74,12 @@ task prep_counts {
   File sample_fastq
   File parsed
   Int barcode_orientation
+  Int bc_len
   String working_directory
   String sample_id
 
   command {
-    python ${working_directory}/make_counts.py ${sample_fastq} ${parsed} ${sample_id} ${barcode_orientation}
+    python ${working_directory}/make_counts.py ${sample_fastq} ${parsed} ${sample_id} ${barcode_orientation} ${bc_len}
     }
   output {
     File out="${sample_id}.match"

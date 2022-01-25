@@ -17,6 +17,7 @@ fastqfile = argv[1]
 dictfile = argv[2]
 out_id = argv[3]
 read_number = int(argv[4])
+bc_len = int(argv[5])
 
 current_path = os.getcwd()
 
@@ -43,9 +44,9 @@ with open("%s/%s.match" % (current_path, out_id), "w") as match_oligo:
                     seq_only = str(seq_only)
                     # Grab the first 20 bases of the sequence
                     if read_number == 2:
-                        bc_seq = seq_only[0:20]
+                        bc_seq = seq_only[0:bc_len]
                     if read_number != 2:
-                        bc_seq = seq_only[-20:]
+                        bc_seq = seq_only[-bc_len:]
 
                     # Check for barcode presence in the dictionary
                     if bc_seq in BC_dict:

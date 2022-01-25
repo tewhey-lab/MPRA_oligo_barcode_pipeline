@@ -126,6 +126,7 @@ There are several optional inputs designed to make use easier.
  - `MPRAmatch.flash_thread` : Integer, default to 25. Number of threads to be passed to FLASH2 for merging reads.
  - `MPRAmatch.map_thread` : Integer, default to 30. Number of threads to be passed to Minimap2 for mapping reads.
  - `MPRAmatch.sort_mem` : Integer, default to 30. Amount of memory (in GB) to be used when sorting.
+ - `MPRAcount.bc_len` : Integer, default to 20. Length of barcodes to be pulled from replicate files
  - `MPRAcount.flags` : String, default to -ECSM -A 0.05 Any combination of these flags or none can be used.
 
 
