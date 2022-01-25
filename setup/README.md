@@ -2,6 +2,8 @@
 
 ### `fill_MPRAmatch_json.sh`
 
+This script provides an easy method to fill out the input JSON needed for `MPRAmatch` to run. Below is an explanation of the variables to fill out to make it work.
+
   - `PROJ`  : "Your project name"
   - `FLOC`  : "<path/to/general/project/folder/${PROJ}>" (Should not contain a "/" at the end)
   - `OUT`   : "${PROJ}_\<suffix>" (The prefix for all files that will be written)
@@ -9,13 +11,19 @@
   - `READ2` : "${FLOC}/fastq/${PROJ}_read2.fastq.gz" (Pointer to the read2 fastq file)
   - `FASTA` : "${FLOC}/setup/${PROJ}_reference.fasta.gz" (Pointer the the reference fasta file)
 
+**NB** You will also need to input the location of the sample file and the destination file within the script
+
 ### `fill_MPRAcount_json.sh`
+
+This script provides an easy method to fill out the input JSON needed for `MPRAcount` to run. Below is an explanation of the variables to fill out to make it work.
 
   - `PROJ`  : "Your project name"
   - `FLOC`  : "<path/to/general/project/folder/${PROJ}>" (Should not contain a "/" at the end)
   - `OUT`   : "${PROJ}_\<suffix>" (This should match what was used for `fill_MPRAmatch_json.sh`)
   - `ACC`   : "${FLOC}/setup/<path/to/replicate_index>" (Tab separated file with 4 columns, example [here](https://github.com/tewhey-lab/MPRA_oligo_barcode_pipeline/blob/master/setup/acc_id_example.txt))
   - `PARS`  : "${FLOC}/<MPRAmatch_output_dir>/${OUT}.merged.match.enh.mapped.barcode.ct.parsed" (Pointer to the parsed file output from MPRAmatch)
+
+**NB** You will also need to input the location of the sample file and the destination file within the script
 
 ### Set up the `acc_id` file
 
