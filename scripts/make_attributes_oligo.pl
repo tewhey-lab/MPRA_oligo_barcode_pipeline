@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-## Create attributes file based on count data, and a list of controls
+## Create attributes file based on a project file containing the oligo ID and the project(s) to which it belongs
 ## Oligo example: chr:pos:ref:alt:allele:window(:haplotype)
 ## output columns: id snp chromosome snp_pos  ref_allele  alt_allele allele window  strand  project haplotype
 
