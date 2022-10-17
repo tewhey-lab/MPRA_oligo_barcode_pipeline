@@ -40,9 +40,11 @@ workflow MPRAcount {
                       }
   call make_count_table { input:
                             working_directory=working_directory,
+                            out_directory=out_directory,
                             list_inFile=make_infile.out,
                             flags=flags,
-                            id_out=id_out
+                            id_out=id_out,
+                            acc_id=acc_id
                           }
   call count_QC { input:
                     count_out = make_count_table.count,
@@ -116,18 +118,22 @@ task make_infile {
 task make_count_table {
   # Compile barcodes into a count table - columns from left to right: barcode oligo (Error CIGAR MD Aln_Start:Stop) [replicate names]
   File list_inFile
+  File acc_id
   String working_directory
+  String out_directory
   String? flags = ""
   String id_out
   command <<<
-    perl ${working_directory}/compile_bc.pl ${flags} ${list_inFile} ${id_out}.count > ${id_out}.log
-    awk '{if(NR%6==1){sum=0;good=0}
+    perl ${working_directory}/compile_bc_cs.pl ${flags} ${list_inFile} ${id_out}.count > ${id_out}.log
+    awk '{if(NR%6==1){sum=0;good=0;}
       if(NR%6==1){printf "%s\t",$3; printf "%s\t",${id_out};}
       if(NR%6==3){printf "%0.f\t", $2; printf "%0.f\t", $3;sum+=$3;good+=$3;}
-      if(NR%6==4){sum+=$3}
-      if(NR%6==5){sum+=$3}
+      if(NR%6==4){sum+=$3;}
+      if(NR%6==5){sum+=$3;}
       if(NR%6==0){printf "%0.f\t", sum; printf "%.2f\n", good/(sum)*100;}
       }' ${id_out}.log > ${id_out}.stats
+
+    Rscript ${working_directory}/read_stats.R ${id_out}.stats ${acc_id} ${id_out} ${out_directory}
     >>>
   output {
     File count="${id_out}.count"

@@ -7,78 +7,21 @@ args = commandArgs(trailingOnly=TRUE)
 
 parsed_file <- args[1]
 hist_file <- args[2]
-fasta_file<-args[3]
-id_out <- args[4]
+preseq_out <- args[3]
+preseq_in <- args[4]
+fasta_file<-args[5]
+id_out <- args[6]
 
 
 count.hist<-read.delim(hist_file,header=FALSE)
 flags<-read.delim(parsed_file,header=FALSE)[,c(5,7)]
 fasta<-read.table(fasta_file,header=FALSE)
+preseq.out <- read.delim(preseq_out, header = T)
+preseq.in <- read.delim(preseq_in, header = F)
 
-# colnames(flags) <- c("flag_code","error_rate")
-# dict <- dict[,1:3]
-# colnames(dict) <- c("Barcode","Oligo","Seen")
-# dict$Oligo <- as.factor(dict$Oligo)
-# dict$Seen <- as.numeric(dict$Seen)
-
-# libP_oligos <- colsplit(dict$Oligo,",",c("keep","reject"))
-# libP_reject <- dict[libP_oligos$keep=="*"|libP_oligos$reject!="",]
-# libP_keep <- dict[libP_oligos$keep!="*"&libP_oligos$reject=="",]
-
-# oligo_freq_P <- table(libP_keep$Oligo)
-# oligo_freq_P <- as.data.frame(oligo_freq_P)
-# colnames(oligo_freq_P) <- c("oligo","number_of_barcodes")
-# 
-# libP_keep_agg <- aggregate(Seen ~ Oligo, data = libP_keep, FUN=sum)
-# colnames(oligo_freq_P) <- c("Oligo","Barcodes")
-# count_hist_P <- merge(oligo_freq_P,libP_keep_agg,by="Oligo",all = T)
-# 
-# xlimP<-sum(quantile(count_hist_P$Seen,0.99))
-# meanP<-mean(count_hist_P$Seen)
-# maxoP<-max(count_hist_P$Seen)
-# 
-# flags_parsedP <- flags_dict[flags_dict$flag_code==0,]
-# flags_parsedP$error_rate <- as.numeric(flags_parsedP$error_rate)
-# 
-# flagP_ct<-data.frame(table(flags_dict$flag_code))
-# colnames(flagP_ct)<-c("Flag","Freq")
-# message(paste0(flagP_ct$Flag, collapse = "\t"))
-# message(paste0(flagP_ct$Freq, collapse = "\t"))
-# flagP_ct$Flag<-as.character(flagP_ct$Flag)
-# flagP_ct[flagP_ct$Flag==0,]$Flag<-"Passing"
-# flagP_ct[flagP_ct$Flag==2,]$Flag<-"Failed or No Mapping"
-# flagP_ct[flagP_ct$Flag==1,]$Flag<-"Conflict"
-# 
-# flagP_ct$percent <- (flagP_ct$Freq/sum(flagP_ct$Freq)) * 100
-# flagP_ct$row<-1
-# 
-# 
-# 
-# a <- ggplot(oligo_freq_P,aes(x=Barcodes)) + geom_histogram(bins=300) + labs(title=paste0("Number of Barcode Frequency - ", id_out)) + theme_light()
-# d <- ggplot(count_hist_P, aes(Seen)) +
-#   stat_ecdf(geom = "step") +
-#   theme(legend.position="top") +
-#   coord_cartesian(xlim=c(0,xlimP)) +
-#   geom_vline(xintercept=meanP, linetype="solid", color = "red", size=0.5) +
-#   geom_vline(xintercept=meanP*5, linetype="dashed", color = "red", size=0.5) +
-#   geom_vline(xintercept=meanP/5, linetype="dashed", color = "red", size=0.5) +
-#   xlab("Per Oligo Seq Coverage") + ggtitle(paste0("Oligo Cov CDF - truncated, max: ",maxoP,"\n",id_out)) +
-#   theme_bw() + theme(panel.grid.major = element_line(size = .25,colour = rgb(0,0,0,75,maxColorValue=255)), panel.grid.minor = element_blank()) 
-# f <- ggplot(flags_parsedP, aes(x=error_rate)) +
-#   geom_histogram()+
-#   theme(legend.position="top") +
-#   xlab("Error Rate for Passing Barcodes") + ggtitle(paste0("Oligo Error Rate - ", id_out)) +
-#   theme_bw() + theme(panel.grid.major = element_line(size = .25,colour = rgb(0,0,0,75,maxColorValue=255)), panel.grid.minor = element_blank()) 
-# h <- ggplot(flagP_ct, aes(x = row,y = Freq, fill = Flag)) +
-#   geom_bar(stat="identity") + 
-#   theme_bw() + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
-#   ggtitle("Sequence Mapping") +
-#   geom_text(aes(label = percent), position = position_stack(),vjust = 0.5)
-# 
-# 
-# pdf(paste0(id_out,"_barcode_qc.pdf"), width = 10, height = 10) # Open a new pdf file
-# grid.arrange(a,d,f,h)
-# dev.off()
+message(paste0(count.hist[1,], collapse = "\t"))
+message(paste0(preseq.out[1,], collapse = "\t"))
+message(paste0(preseq.in[1,], collapse = "\t"))
 
 message(max(flags$V7))
 message(min(flags$V7))
@@ -137,6 +80,14 @@ plotD<-ggplot(flag.ct, aes(x = row,y = Freq, fill = Flag)) +
   ggtitle("Sequence Mapping") +
   geom_text(aes(label = percent), position = position_stack(vjust = 0.5))
 
+
+### Here total distinct actually needs to be what is total found and total found needs to be the sum of product of the two columns
+plotE <- ggplot(preseq.out, aes(x=TOTAL_READS, y=EXPECTED_DISTINCT)) + geom_point() + geom_line() + geom_ribbon(aes(ymin=LOWER_0.95CI,ymax=UPPER_0.95CI, fill='prediction'), fill="black", alpha=0.4) + 
+  geom_hline(yintercept = sum(preseq.in$V2), col="red") + geom_vline(xintercept = sum(preseq.in$V2*preseq.in$V1), col="red") +
+  xlab("Total Reads") + ylab("Expected Distinct Reads") + 
+  ggtitle("Expected Dinstinct per Total Reads", subtitle = paste0("total found: ", sum(preseq.in$V2*preseq.in$V1)," total distinct: ", sum(preseq.in$V2))) +
+  theme_light()
+
 seen<-nrow(count.hist)
 total<-nrow(fasta)
 per<-round(seen/total,4)*100
@@ -144,5 +95,5 @@ per<-round(seen/total,4)*100
 grid.title<-paste0(id_out," - ",per,"% captured - ",seen,"/",total)
 
 pdf(paste0(id_out,"_barcode_qc.pdf"), width = 10, height = 10) # Open a new pdf file
-grid.arrange(plotA,plotB,plotC,plotD,top=grid.title)
+grid.arrange(plotA,plotB,plotC,plotD, plotE,top=grid.title)
 dev.off()

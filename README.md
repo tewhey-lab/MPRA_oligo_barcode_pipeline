@@ -12,6 +12,8 @@ If you are unable to run the pipeline via a container, then set up your environm
 
 * Make sure all the available scripts (except for the WDL itself) are in a known directory (you will need to provide the path to this directory)
 
+* WDL does not get rid of intermediate files. The  pipelines are set up to relocate files that are important for later use from where the pipeline is run to a more permanent location. Consider running the pipeline in a scratch area so you don't have to go and delete other intermediate files after the pipeline completes itself. If you do opt to delete the files manually, please check that the relocation at the end of the pipeline has completed.
+
 ## Suggested directory organization chart:
 ```
 	- overall_project/

@@ -81,6 +81,8 @@ workflow MPRAmatch {
   call qc_plot_t { input:
                     parsed=Parse.out_parsed,
                     hist=Parse.out_hist,
+                    preseq_out=preseq.res,
+                    preseq_in=preseq.hist,
                     reference_fasta=reference_fasta,
                     working_directory=working_directory,
                     id_out=id_out
@@ -90,7 +92,7 @@ workflow MPRAmatch {
                     matched=Pull_Barcodes.out1,
                     rejected=Pull_Barcodes.out2,
                     organized_fasta=Rearrange.out,
-                    sam_file=MiniMap.out1,
+                    sam_file=MiniMap.out3,
                     map_log=MiniMap.out2,
                     MPRA_out=SAM2MPRA.out,
                     sorted=Sort.out,
@@ -145,9 +147,10 @@ task Rearrange {
   String id_out
   command <<<
     awk '{print ">"$1"#"$3"\n"$4}' ${matched_barcodes} > ${id_out}.merged.match.enh.fa
+    gzip ${id_out}.merged.match.enh.fa
     >>>
   output {
-    File out="${id_out}.merged.match.enh.fa"
+    File out="${id_out}.merged.match.enh.fa.gz"
     }
   }
 task MiniMap {
@@ -158,10 +161,12 @@ task MiniMap {
   String id_out
   command {
     minimap2 --for-only -Y --secondary=no -m 10 -n 1 -t ${map_thread} --end-bonus 12 -O 5 -E 1 -k 10 -2K50m --MD --eqx --cs=long -c -a ${reference_fasta} ${organized_fasta} > ${id_out}.merged.match.enh.sam 2> ${id_out}.merged.match.enh.log
+    samtools view -S -b ${id_out}.merged.match.enh.sam > ${id_out}.merged.match.enh.bam
     }
   output {
     File out1="${id_out}.merged.match.enh.sam"
     File out2="${id_out}.merged.match.enh.log"
+    File out3="${id_out}.merged.match.enh.bam"
     }
   }
 task SAM2MPRA {
@@ -216,11 +221,13 @@ task Parse {
 task qc_plot_t {
   File parsed
   File hist
+  File preseq_out
+  File preseq_in
   File reference_fasta
   String working_directory
   String id_out
   command {
-    Rscript ${working_directory}/mapping_QC_plots.R ${parsed} ${hist} ${reference_fasta} ${id_out}
+    Rscript ${working_directory}/mapping_QC_plots.R ${parsed} ${hist} ${preseq_out} ${preseq_in} ${reference_fasta} ${id_out}
     }
   output {
     File plots="${id_out}_barcode_qc.pdf"
