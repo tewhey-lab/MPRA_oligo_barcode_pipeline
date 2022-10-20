@@ -7,7 +7,7 @@ acc_file <- args[2]
 id_out <- args[3]
 out_dir <- args[4]
 
-stats_out <- read.delim(stats_out_file, stringsAsFactors = F, header=F, sep = "/t")
+stats_out <- read.delim(stats_out_file, stringsAsFactors = F, header=F, sep = "\t")
 acc <- read.delim(acc_file, stringsAsFactors = F, header=F)
 colnames(stats_out) <- c("rep","proj","barcodes","good_reads","total_reads","per_good")
 
