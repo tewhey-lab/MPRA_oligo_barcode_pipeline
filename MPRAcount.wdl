@@ -132,7 +132,6 @@ task make_count_table {
       if(NR%6==5){sum+=$3;}
       if(NR%6==0){printf "%0.f\t", sum; printf "%.2f\n", good/(sum)*100;}
       }' ${id_out}.log > ${id_out}.stats
-
     Rscript ${working_directory}/read_stats.R ${id_out}.stats ${acc_id} ${id_out} ${out_directory}
     >>>
   output {
