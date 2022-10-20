@@ -83,7 +83,7 @@ plotD<-ggplot(flag.ct, aes(x = row,y = Freq, fill = Flag)) +
 
 ### Here total distinct actually needs to be what is total found and total found needs to be the sum of product of the two columns
 plotE <- ggplot(preseq.out, aes(x=TOTAL_READS, y=EXPECTED_DISTINCT)) + geom_point() + geom_line() + geom_ribbon(aes(ymin=LOWER_0.95CI,ymax=UPPER_0.95CI, fill='prediction'), fill="black", alpha=0.4) + 
-  geom_hline(yintercept = sum(preseq.in$V2), col="red") + geom_vline(xintercept = sum(preseq.in$V2*preseq.in$V1), col="red") +
+  geom_point(aes(x = sum(preseq.in$V2*preseq.in$V1),y = sum(preseq.in$V2)), col="red") +
   xlab("Total Reads") + ylab("Expected Distinct Reads") + 
   ggtitle("Expected Dinstinct per Total Reads", subtitle = paste0("total found: ", sum(preseq.in$V2*preseq.in$V1)," total distinct: ", sum(preseq.in$V2))) +
   theme_light()
