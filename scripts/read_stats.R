@@ -17,8 +17,8 @@ for(rep in unique(stats_out$rep)){
   stats_out$cell[which(stats_out$rep==rep)] <- acc$V3[which(acc$V2==rep)]
 }
 
-a <- ggplot(stats_out, aes(x=rep, y=barcodes, fill=cell)) + geom_bar(stat="identity") + coord_flip() + theme_light()
-b <- ggplot(stats_out, aes(x=rep, fill=cell)) + geom_bar(stat="identity", aes(y=total_reads), alpha=0.5) + geom_bar(stat="identity", aes(y=good_reads)) + coord_flip() + theme_light()
+a <- ggplot(stats_out, aes(x=rep, y=log(barcodes), fill=cell)) + geom_bar(stat="identity") + coord_flip() + theme_light()
+b <- ggplot(stats_out, aes(x=rep, fill=cell)) + geom_bar(stat="identity", aes(y=log(total_reads)), alpha=0.5) + geom_bar(stat="identity", aes(y=log(good_reads))) + coord_flip() + theme_light()
 
 
 pdf(paste0(out_dir,"/",id_out,"_read_stats.pdf"))
