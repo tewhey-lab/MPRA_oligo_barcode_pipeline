@@ -14,7 +14,7 @@ colnames(stats_out) <- c("rep","proj","barcodes","good_reads","total_reads","per
 stats_out$cell <- NA
 for(rep in unique(stats_out$rep)){
   message(rep)
-  stats_out$cell[which(stats_out$rep==rep)] <- cond$V3[which(cond$V2==rep)]
+  stats_out$cell[which(stats_out$rep==rep)] <- acc$V3[which(acc$V2==rep)]
 }
 
 a <- ggplot(stats_out, aes(x=rep, y=barcodes, fill=cell)) + geom_bar(stat="identity") + coord_flip() + theme_light()
