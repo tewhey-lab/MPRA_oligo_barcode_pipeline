@@ -23,7 +23,7 @@ colnames(dataCond) <- "condition"
 
 write.table(dataCond, paste0(id_out, "_condition.txt"), quote=F, sep="\t", row.names=T, col.names=F)
 
-dataCount <- dataCount[,colnames(dataCount) %notin% c("Error","CIGAR","MD","Aln_Start.Stop")]
+dataCount <- dataCount[,colnames(dataCount) %notin% c("Error","CIGAR","MD","cs","Aln_Start.Stop")]
 
 message(paste0(colnames(dataCount), collapse="\t"))
 
