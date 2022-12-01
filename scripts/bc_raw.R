@@ -22,7 +22,7 @@ bcRawOut <- function(countsData, conditionData, file_prefix, floc){
   for(celltype in levels(conditionData$condition)){
     if(celltype=="DNA") next
     reps <- rownames(conditionData)[which(conditionData$condition=="DNA" | conditionData$condition==celltype)]
-    count_temp <- countsData[,c("Barcode","Oligo","cs",reps)]
+    count_temp <- countsData[,colnames(countsData) %in% c("Barcode","Oligo",reps)]
     write.table(count_temp, paste0(floc, "/", file_prefix,"_",celltype,".counts"), quote=F, sep = "\t", row.names=F)
   }
 }
