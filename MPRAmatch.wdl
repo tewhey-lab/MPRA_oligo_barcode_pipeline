@@ -114,7 +114,7 @@ task Flash {
   Int flash_thread
   String id_out
   command {
-    flash2 -r ${read_len} -f 274 -s ${flash_thread} -o ${id_out}.merged -t 25 ${read_a} ${read_b}
+    flash2 -r ${read_len} -f 274 -s 25 -o ${id_out}.merged -t ${flash_thread} ${read_a} ${read_b}
     }
   output {
     File out="${id_out}.merged.extendedFrags.fastq"
