@@ -7,7 +7,7 @@ We have the whole environment containerized, the definition file is available in
 If you are unable to run the pipeline via a container, then set up your environment as described below:
 
 * Have modules for Cromwell, Womtool, FLASH2, minimap2 (version 2.17), preseq, pandas, reshape2, ggplot2, gridextra, and Biopython available
-  * `conda install -c bioconda cromwell womtool flash2 minimap2=2.17 preseq pandas biopython`
+  * `conda install -c bioconda cromwell womtool flash2 minimap2=2.17 preseq pandas biopython, samtools`
   * `conda install -c conda-forge r-reshape2 r-ggplot2 r-gridextra`
 
 * Make sure all the available scripts (except for the WDL itself) are in a known directory (you will need to provide the path to this directory)
@@ -113,7 +113,7 @@ _MPRAcount.wdl_
      }
  ```
 
-**NB: For the replicate fastq files, a single fastq.gz file is required for each replicate, if there are more than one they should be concatenated together. This can be done quickly using the `merge_*.sh` files in the `setup` folder**
+**NB: For the reference fasta, make sure it contains _only_ the CRE sequences and not the flanking sequence. For the replicate fastq files, a single fastq.gz file is required for each replicate, if there are more than one they should be concatenated together. This can be done quickly using the `merge_*.sh` files in the `setup` folder**
 
 There are several optional inputs designed to make use easier.
  - `MPRAmatch.barcode_orientation` / `MPRAcount.barcode_orientation` : Integer, default to 2. Pulls barcode 5' to 3' end. If set to 1 barcode will be pulled in 3' to 5' orientation.
