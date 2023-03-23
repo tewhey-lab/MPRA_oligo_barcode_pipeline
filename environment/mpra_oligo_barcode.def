@@ -1,5 +1,5 @@
 bootstrap: docker
-from: ubuntu:21.10
+from: ubuntu:22.04
 
 %environment
     PATH="/usr/local/anaconda/bin:$PATH"
