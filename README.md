@@ -6,9 +6,9 @@ We have the whole environment containerized, the definition file is available in
 
 If you are unable to run the pipeline via a container, then set up your environment as described below:
 
-* Have modules for Cromwell, Womtool, FLASH2, minimap2 (version 2.17), preseq, pandas, reshape2, ggplot2, gridextra, and Biopython available
-  * `conda install -c bioconda cromwell womtool flash2 minimap2=2.17 preseq pandas biopython, samtools`
-  * `conda install -c conda-forge r-reshape2 r-ggplot2 r-gridextra`
+* Have modules for Cromwell, Womtool, FLASH2, minimap2 (version 2.17), preseq, pandas, reshape2, ggplot2, gridextra, and Biopython available (`.yml` of this conda enviornment can be found in the environment tab)
+  * `conda install -c bioconda cromwell womtool flash2 minimap2=2.17 preseq pandas samtools`
+  * `conda install -c conda-forge r-reshape2 r-ggplot2 r-gridextra biopython`
 
 * Make sure all the available scripts (except for the WDL itself) are in a known directory (you will need to provide the path to this directory)
 
