@@ -1,0 +1,19 @@
+name: mpra_oligo_barcode
+channels:
+  - intel
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - r-reshape2
+  - r-ggplot2
+  - r-gridextra
+  - biopython
+  - minimap2=2.17
+  - womtool
+  - preseq
+  - flash2
+  - cromwell
+  - pandas
+  - samtools
+prefix: /home/deweyh/miniconda3/envs/mpra_oligo_barcode
