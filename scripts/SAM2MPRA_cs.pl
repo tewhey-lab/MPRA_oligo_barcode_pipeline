@@ -108,7 +108,7 @@ while (<FASTA>)
 			{
 			$cs_col = $parse_col if($parse_col =~ m/^cs:Z:/);
 			$cs_col =~ s/^cs:Z:// if($parse_col =~ m/^cs:Z:/);
-			print STDERR "cs start: ".$cs_col."\n";
+			# print STDERR "cs start: ".$cs_col."\n";
 			}
 
 		 #ParseFlag $bitflag[7] eq strand (1=neg, 0=pos)

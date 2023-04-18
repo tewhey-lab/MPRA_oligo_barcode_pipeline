@@ -5,6 +5,7 @@ workflow MPRAmatch {
   File read_a #R1 fastq
   File read_b #R2 fastq
   File reference_fasta #Oligo sequences with names (can be the oligo order sheet)
+  File? attributes #Optional attributes file used for saturation mutagenesis libraries
   Int? barcode_orientation = 2 #2 if you followed the method above, otherwise 1. Default to 2
   Int? thread = 30 #Number of threads to be passed to FLASH2 and MiniMap2. Default to 30
   Int? mem = 30 #Memory to be passed to the sort function. Default to 30G
@@ -70,6 +71,7 @@ workflow MPRAmatch {
                   }
   call Parse { input:
                 #  parse=parse,
+                  attributes=attributes,
                   working_directory=working_directory,
                   counted=Ct_Seq.out,
                   id_out=id_out
@@ -206,11 +208,18 @@ task Ct_Seq {
   }
 task Parse {
   # Parses the barcode oligo pairs to resolve multimapping barcodes
+  File? attributes
   File counted
   String working_directory
   String id_out
+  Boolean sat_mut=attributes == None
   command <<<
-    perl ${working_directory}/parse_map.pl ${counted} > ${id_out}.merged.match.enh.mapped.barcode.ct.parsed
+    if (sat_mut) {
+      perl ${working_directory}/parse_map.pl ${counted} > ${id_out}.merged.match.enh.mapped.barcode.ct.parsed
+    }
+    if (!sat_mut) {
+      perl ${working_directory}/parse_map.pl -S -A ${attributes} ${counted} > ${id_out}.merged.match.enh.mapped.barcode.ct.parsed
+    }
     awk '($5 == 0)' ${counted} | awk '{ct[$2]++;cov[$2]+=$4;} END {for(i in ct) print i"\t"ct[i]"\t"cov[i]}' > ${id_out}.merged.match.enh.mapped.barcode.ct.plothist
     >>>
   output {
