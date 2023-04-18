@@ -2,6 +2,7 @@
   "MPRAmatch.read_a": "File",
   "MPRAmatch.read_b": "File",
   "MPRAmatch.reference_fasta": "File",
+  "MPRAmatch.attributes": "File?",
   "MPRAmatch.barcode_orientation": "Int?",
   "MPRAmatch.thread": "Int?",
   "MPRAmatch.mem": "Int?",
