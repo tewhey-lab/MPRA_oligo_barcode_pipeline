@@ -160,7 +160,7 @@ task MiniMap {
   Int map_thread
   String id_out
   command {
-    minimap2 --for-only -Y --secondary=no -m 10 -n 1 -t ${map_thread} --end-bonus 12 -O 5 -E 1 -k 10 -2K50m --MD --eqx --cs=long -c -a ${reference_fasta} ${organized_fasta} > ${id_out}.merged.match.enh.sam 2> ${id_out}.merged.match.enh.log
+    minimap2 --for-only -Y --secondary=no -m 10 -n 1 -t ${map_thread} --end-bonus 12 -O 5 -E 1 -k 10 -2K50m --eqx --cs=short -c -a ${reference_fasta} ${organized_fasta} > ${id_out}.merged.match.enh.sam 2> ${id_out}.merged.match.enh.log
     samtools view -S -b ${id_out}.merged.match.enh.sam > ${id_out}.merged.match.enh.bam
     }
   output {
@@ -175,7 +175,7 @@ task SAM2MPRA {
   String working_directory
   String id_out
   command {
-    perl ${working_directory}/SAM2MPRA.pl -C ${sam_file} ${id_out}.merged.match.enh.mapped
+    perl ${working_directory}/SAM2MPRA_cs.pl -C ${sam_file} ${id_out}.merged.match.enh.mapped
     }
   output {
     File out="${id_out}.merged.match.enh.mapped"
