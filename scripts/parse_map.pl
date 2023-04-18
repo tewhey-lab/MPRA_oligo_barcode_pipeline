@@ -13,7 +13,7 @@ getopts('SA:', \%options);
 #####
 #
 #-S = Run in saturation mutagenesis mode
-#-A = Filter for 0 bitflag
+#-A = Atributes file
 #####
 
 my $sat_mut_mode;
