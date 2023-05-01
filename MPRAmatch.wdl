@@ -212,7 +212,7 @@ task Parse {
   File counted
   String working_directory
   String id_out
-  Boolean sat_mut=attributes == None
+  Boolean sat_mut=defined(attributes)
   command <<<
     if (sat_mut) {
       perl ${working_directory}/parse_map.pl ${counted} > ${id_out}.merged.match.enh.mapped.barcode.ct.parsed

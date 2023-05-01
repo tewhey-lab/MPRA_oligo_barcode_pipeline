@@ -49,8 +49,8 @@ with open("%s/%s.match" % (current_path, out_id), "w") as match_oligo:
                         bc_seq = seq_only[-bc_len:]
 
                     # Check for barcode presence in the dictionary
-                    if bc_seq in BC_dict:
-                        match_oligo.write("%s\t%s\t%s\n" % (record.name,bc_seq,BC_dict[bc_seq]))
+                    # if bc_seq in BC_dict:
+                    match_oligo.write("%s\t%s\t%s\n" % (record.name,bc_seq,BC_dict[bc_seq]))
                     if bc_seq not in BC_dict:
                         SeqIO.write(record, reject_fastq, "fastq")
                         reject_bc.write("%s\t%s\n" % (record.name,bc_seq))
