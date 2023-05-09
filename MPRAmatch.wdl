@@ -69,13 +69,24 @@ workflow MPRAmatch {
                     sorted=Sort.out,
                     id_out=id_out
                   }
-  call Parse { input:
-                #  parse=parse,
-                  attributes=attributes,
-                  working_directory=working_directory,
-                  counted=Ct_Seq.out,
-                  id_out=id_out
-                }
+  if (defined(attributes)) {
+    call Parse_sat_mut { input:
+                  #  parse=parse,
+                    attributes=attributes,
+                    working_directory=working_directory,
+                    counted=Ct_Seq.out,
+                    id_out=id_out
+                  }
+  }
+  if (!defined(attributes)) {
+    call Parse { input:
+                  #  parse=parse,
+                    working_directory=working_directory,
+                    counted=Ct_Seq.out,
+                    id_out=id_out
+                  }
+  }
+
   call preseq { input:
                  counted=Ct_Seq.out,
                  id_out=id_out
@@ -208,18 +219,29 @@ task Ct_Seq {
   }
 task Parse {
   # Parses the barcode oligo pairs to resolve multimapping barcodes
+  File counted
+  String working_directory
+  String id_out
+  command <<<
+    perl ${working_directory}/parse_map.pl ${counted} > ${id_out}.merged.match.enh.mapped.barcode.ct.parsed
+
+    awk '($5 == 0)' ${counted} | awk '{ct[$2]++;cov[$2]+=$4;} END {for(i in ct) print i"\t"ct[i]"\t"cov[i]}' > ${id_out}.merged.match.enh.mapped.barcode.ct.plothist
+    >>>
+  output {
+    File out_parsed="${id_out}.merged.match.enh.mapped.barcode.ct.parsed"
+    File out_hist="${id_out}.merged.match.enh.mapped.barcode.ct.plothist"
+    }
+  }
+
+task Parse_sat_mut {
+  # Parses the barcode oligo pairs to resolve multimapping barcodes
   File? attributes
   File counted
   String working_directory
   String id_out
   Boolean sat_mut=defined(attributes)
   command <<<
-    if (sat_mut) {
-      perl ${working_directory}/parse_map.pl ${counted} > ${id_out}.merged.match.enh.mapped.barcode.ct.parsed
-    }
-    if (!sat_mut) {
-      perl ${working_directory}/parse_map.pl -S -A ${attributes} ${counted} > ${id_out}.merged.match.enh.mapped.barcode.ct.parsed
-    }
+    perl ${working_directory}/parse_map.pl -S -A ${attributes} ${counted} > ${id_out}.merged.match.enh.mapped.barcode.ct.parsed
     awk '($5 == 0)' ${counted} | awk '{ct[$2]++;cov[$2]+=$4;} END {for(i in ct) print i"\t"ct[i]"\t"cov[i]}' > ${id_out}.merged.match.enh.mapped.barcode.ct.plothist
     >>>
   output {
