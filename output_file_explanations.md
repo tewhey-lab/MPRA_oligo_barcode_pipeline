@@ -19,7 +19,7 @@
     6. count
     7. mapped length
     8. CIGAR
-    9. Adjusted score ((# mismatched + # CIGAR substitutions + non-aligned length)/oligo length)
+    9. Adjusted score ( (mismatched bp + inserted bp + deleted bp + non-aligned length) / total oligo length )
     10. oligo sequence
     11. PASS/FAIL (PASS if adjusted score < 0.05)
     12. Raw error
