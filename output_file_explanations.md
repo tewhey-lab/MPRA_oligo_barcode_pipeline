@@ -21,7 +21,7 @@
     8. CIGAR
     9. Adjusted score ( (mismatched bp + inserted bp + deleted bp + non-aligned length) / total oligo length )
     10. oligo sequence
-    11. PASS/FAIL (PASS if adjusted score < 0.05)
+    11. PASS/FAIL (PASS if adjusted score <= 0.05)
     12. Raw error
     13. MD/cs tag
     14. start/stop from mapping within reference oligo sequence
