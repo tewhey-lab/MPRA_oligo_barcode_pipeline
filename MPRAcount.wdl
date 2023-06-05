@@ -21,7 +21,6 @@ workflow MPRAcount {
                           sample_fastq=replicate.left,
                           barcode_orientation=barcode_orientation,
                           bc_len=bc_len,
-                          parsed=parsed,
                           sample_id=replicate.right,
                         }
     call associate { input:
@@ -74,14 +73,13 @@ workflow MPRAcount {
 task prep_counts {
   # Grab the barcodes and check that they exist in the dictionary - if they don't exist write them to a seqparate fastq
   File sample_fastq
-  File parsed
   Int barcode_orientation
   Int bc_len
   String working_directory
   String sample_id
 
   command {
-    python ${working_directory}/make_counts.py ${sample_fastq} ${parsed} ${sample_id} ${barcode_orientation} ${bc_len}
+    python ${working_directory}/make_counts.py ${sample_fastq} ${sample_id} ${barcode_orientation} ${bc_len}
     }
   output {
     File out="${sample_id}.match"
@@ -125,12 +123,13 @@ task make_count_table {
   String id_out
   command <<<
     perl ${working_directory}/compile_bc_cs.pl ${flags} ${list_inFile} ${id_out}.count > ${id_out}.log
-    awk '{if(NR%6==1){sum=0;good=0;}
-      if(NR%6==1){printf "%s\t",$3; printf "%s\t",${id_out};}
-      if(NR%6==3){printf "%0.f\t", $2; printf "%0.f\t", $3;sum+=$3;good+=$3;}
-      if(NR%6==4){sum+=$3;}
-      if(NR%6==5){sum+=$3;}
-      if(NR%6==0){printf "%0.f\t", sum; printf "%.2f\n", good/(sum)*100;}
+    awk '{if(NR%7==1){sum=0;good=0;bc=0;over=0;}
+      if(NR%7==1){printf "%s\t",$3; printf "%s\t", ${id_out};}
+      if(NR%7==3){sum+=3;bc+=$2;over+=$3;}
+      if(NR%7==4){printf "%0.f\t", $2; printf "%0.f\t", $3;good+=$3;sum+=$3;bc+=$2;over+=$3;}
+      if(NR%7==5){sum+=$3;bc+=$2;over+=$3;}
+      if(NR%7==6){sum+=$3;bc+=$2;over+=$3;}
+      if(NR%7==0){printf "%0.f\t", sum; printf "%.2f\t", good/(sum)*100; printf "%0.f\t", bc; printf "%0.f\t", over; printf "%.2f\n", good/(over)*100}
       }' ${id_out}.log > ${id_out}.stats
     Rscript ${working_directory}/read_stats.R ${id_out}.stats ${acc_id} ${id_out} ${out_directory}
     >>>
