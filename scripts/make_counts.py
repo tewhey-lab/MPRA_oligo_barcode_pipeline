@@ -14,10 +14,10 @@ from Bio.Seq import Seq
 from Bio import SeqIO
 
 fastqfile = argv[1]
-dictfile = argv[2]
-out_id = argv[3]
-read_number = int(argv[4])
-bc_len = int(argv[5])
+#dictfile = argv[2]
+out_id = argv[2]
+read_number = int(argv[3])
+bc_len = int(argv[4])
 
 current_path = os.getcwd()
 
@@ -27,10 +27,10 @@ def open_by_suffix(filename):
     else:
         return filename
 
-print("Reading Parsed File...")
-BC_list = pd.read_table(dictfile, header=None, index_col=False, usecols=[0,1])
-print("Setting up Dictionary...")
-BC_dict = dict(zip(BC_list[0], BC_list[1]))
+#print("Reading Parsed File...")
+#BC_list = pd.read_table(dictfile, header=None, index_col=False, usecols=[0,1])
+#print("Setting up Dictionary...")
+#BC_dict = dict(zip(BC_list[0], BC_list[1]))
 
 with open("%s/%s.match" % (current_path, out_id), "w") as match_oligo:
     with open("%s/%s.reject.fastq" % (current_path, out_id), "w") as reject_fastq:
@@ -51,6 +51,6 @@ with open("%s/%s.match" % (current_path, out_id), "w") as match_oligo:
                     # Check for barcode presence in the dictionary
                     # if bc_seq in BC_dict:
                     match_oligo.write("%s\t%s\t%s\n" % (record.name,bc_seq,BC_dict[bc_seq]))
-                    if bc_seq not in BC_dict:
-                        SeqIO.write(record, reject_fastq, "fastq")
-                        reject_bc.write("%s\t%s\n" % (record.name,bc_seq))
+                    #if bc_seq not in BC_dict:
+                    #    SeqIO.write(record, reject_fastq, "fastq")
+                    #    reject_bc.write("%s\t%s\n" % (record.name,bc_seq))
