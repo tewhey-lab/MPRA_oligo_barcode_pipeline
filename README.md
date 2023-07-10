@@ -99,6 +99,9 @@ _MPRAmatch.wdl_
        "MPRAmatch.id_out": "Your_Project_ID"
      }
  ```
+
+ **NB: If the sequencing for read1 and read2 results in multiple files for both (i.e. multiple lanes or split between plates) when concatenating them into a single read1 file and read2 file make sure paired files are in the same order between both fastqs.**
+ 
 _MPRAcount.wdl_
  ```
      {
