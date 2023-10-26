@@ -15,6 +15,8 @@ workflow MPRAmatch {
   Int? enh_min = 50 #Minimum acceptable length for an oligo
   Int? enh_max = 210 #Maximum acceptable length for an oligo
   Int? bc_len = 20 #Length of barcodes used for project
+  Int? bc_link_size = 38 #Length of adapter between barcode and oligo (include linker sequences)
+  Int? end_link_size = 16 #Length of end adapter after oligo (5' end, include linker sequence)
   String working_directory #String of the directory relative to the WDL where the other required scripts live
   String out_directory #String of the directory that all files will be copied to
   String id_out #Project identifier - all files will have this as the prefix for their name
@@ -42,7 +44,9 @@ workflow MPRAmatch {
                           enh_max=enh_max,
                           bc_len=bc_len,
                           oligo_link=oligo_link,
-                          end_oligo_link=end_oligo_link
+                          end_oligo_link=end_oligo_link,
+                          bc_link_size=bc_link_size,
+                          end_link_size=end_link_size
                         }
   call Rearrange { input:
                       matched_barcodes=Pull_Barcodes.out1,
@@ -149,8 +153,10 @@ task Pull_Barcodes {
   Int enh_min
   Int enh_max
   Int bc_len
+  Int bc_link_size
+  Int end_link_size
   command {
-    perl ${working_directory}/pull_barcodes.pl ${merged_fastq} ${read_number} ${id_out}.merged ${barcode_link} ${oligo_link} ${end_oligo_link} ${seq_min} ${enh_min} ${enh_max} ${bc_len}
+    perl ${working_directory}/pull_barcodes.pl ${merged_fastq} ${read_number} ${id_out}.merged ${barcode_link} ${oligo_link} ${end_oligo_link} ${seq_min} ${enh_min} ${enh_max} ${bc_len} ${bc_link_size} ${end_link_size}
     }
   output {
     File out1="${id_out}.merged.match"
